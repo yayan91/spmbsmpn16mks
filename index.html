@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMB Online - UPT SPF SMP NEGERI 16 MAKASSAR</title>
+	
+	<link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        primary: '#4F46E5', secondary: '#EC4899',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* Efek Kaca (Glassmorphism) yang lebih halus */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.15);
+        }
+        /* Sembunyikan elemen secara default untuk routing halaman */
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar agar tabel admin lebih cantik */
+        ::-webkit-scrollbar { height: 8px; width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 min-h-screen text-slate-800 font-sans flex flex-col relative" onload="updateDate()">
+
+    <div class="flex-grow flex items-center justify-center p-4 md:p-8">
+        
+        <div class="w-full max-w-7xl glass-panel rounded-[2rem] p-6 md:p-12 relative">
+            
+            <div id="page-landing" class="page-section active text-center">
+                <div class="flex justify-center items-center gap-6 mb-5">
+                        <img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo 1" class="h-16 md:h-20 w-auto object-contain drop-shadow-md">
+						<img src="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2" alt="Logo 2" class="h-16 md:h-20 w-auto object-contain drop-shadow-md">
+					</div>
+					
+                <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-pink-600 mb-4 tracking-tight">SPMB Online 2026</h1>
+                <p class="text-slate-700 text-lg font-semibold mb-2">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+                
+                <div class="max-w-2xl mx-auto mb-10">
+                    <p class="text-slate-500 leading-relaxed text-sm md:text-base">Aplikasi Sistem Penerimaan Murid Baru (SPMB) dirancang untuk mempermudah pemantauan status seleksi secara transparan, cepat, dan terintegrasi.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl mx-auto">
+                    <button onclick="navigate('page-login')" class="group relative p-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 border-l-4 border-indigo-500 flex items-center gap-4 text-left">
+                        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shrink-0"><i class="fas fa-sign-in-alt"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800">Login Sistem</h3>
+                            <p class="text-xs text-slate-500 mt-1">Masuk untuk Calon Siswa</p>
+                        </div>
+                    </button>
+                    
+                    <button onclick="navigate('page-cek-status')" class="group relative p-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 border-l-4 border-pink-500 flex items-center gap-4 text-left">
+                        <div class="w-14 h-14 bg-pink-50 text-pink-600 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shrink-0"><i class="fas fa-search"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800">Cek Status</h3>
+                            <p class="text-xs text-slate-500 mt-1">Pantau berkas untuk Orang Tua</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="page-login" class="page-section max-w-md mx-auto">
+                <button onclick="navigate('page-landing')" class="text-slate-500 hover:text-indigo-600 mb-6 font-medium flex items-center transition"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
+                <div class="text-center mb-8">
+                    <div class="flex justify-center items-center gap-6 mb-5">
+                        <img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo 1" class="h-16 md:h-20 w-auto object-contain drop-shadow-md" onerror="this.style.display='none'">
+                        <img src="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2" alt="Logo 2" class="h-16 md:h-20 w-auto object-contain drop-shadow-md" onerror="this.style.display='none'">
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">Silakan Masuk</h2>
+                    <p class="text-slate-500 text-sm mt-1">Gunakan NISN anda pada Username dan Password Untuk Login</p>
+                </div>
+                
+                <form id="formLogin" onsubmit="prosesLogin(event)" class="space-y-5 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Username / NISN</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-user text-slate-400"></i></div>
+                            <input type="text" id="loginUsername" required class="w-full pl-10 pr-4 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-lock text-slate-400"></i></div>
+                            <input type="password" id="loginPassword" required class="w-full pl-10 pr-10 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-pink-400 outline-none transition">
+                            <button type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600">
+                                <i id="eyeIconLogin" class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg mt-2 flex justify-center items-center">
+                        Masuk Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div id="page-cek-status" class="page-section">
+                <button onclick="navigate('page-landing')" class="text-slate-500 hover:text-pink-600 mb-6 font-medium flex items-center"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-clipboard-list text-pink-500 mr-3"></i>Tracking Berkas</h2>
+                    <p class="text-slate-500 mt-2">Pantau status pendaftaran dan kelengkapan berkas siswa.</p>
+                </div>
+                
+                <div class="max-w-xl mx-auto mb-8 flex gap-2">
+                    <input type="text" id="inputNisnCek" placeholder="Ketik NISN Siswa..." class="flex-1 px-5 py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-pink-400 outline-none shadow-sm text-lg">
+                    <button onclick="prosesCekStatus()" class="bg-pink-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-pink-700 transition shadow-md"><i class="fas fa-search mr-2"></i>Cari</button>
+                    <button onclick="document.getElementById('hasilCekStatus').classList.add('hidden'); document.getElementById('inputNisnCek').value=''; " class="bg-slate-200 text-slate-600 px-5 py-4 rounded-xl hover:bg-slate-300 transition" title="Reset"><i class="fas fa-sync-alt"></i></button>
+                </div>
+
+                <div class="max-w-xl mx-auto mt-4 mb-8 bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl shrink-0"><i class="fab fa-whatsapp"></i></div>
+                    <div>
+                        <h4 class="font-bold text-green-800 text-sm">Butuh Bantuan? (Info & Grup WA)</h4>
+                        <p class="text-xs text-green-700">Hubungi Admin: Muhammad Hasratul</p>
+                        <a href="https://wa.me/6281527008924" target="_blank" class="text-sm font-bold text-green-600 hover:text-green-800 underline">081527008924</a>
+                    </div>
+                </div>
+
+                <div id="hasilCekStatus" class="hidden bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm max-w-3xl mx-auto">
+                    </div>
+            </div>
+
+            <div id="page-siswa" class="page-section">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-6 border-b border-slate-200 pb-4 gap-4">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1 current-date"><i class="far fa-calendar-alt mr-1"></i> Memuat tanggal...</p>
+                        <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-user-graduate text-indigo-600 mr-2"></i>Selamat Datang, <span id="namaSiswaProfile" class="text-indigo-600">Siswa</span>!</h2>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="masukDashboardSiswa()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl font-semibold hover:bg-slate-200 transition" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                        <button onclick="logout()" class="bg-red-50 text-red-600 px-5 py-2 rounded-xl font-semibold hover:bg-red-100 border border-red-100 transition"><i class="fas fa-power-off mr-2"></i>Keluar</button>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-5 rounded-2xl mb-6 border border-indigo-100 shadow-sm">
+                    <h3 class="font-bold text-indigo-800 mb-3 border-b border-indigo-200 pb-2"><i class="fas fa-id-card mr-2"></i>Identitas Siswa</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                        <div><p class="text-slate-500 mb-1">Nama Lengkap</p><p class="font-bold text-slate-800" id="detailNamaSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1">NISN</p><p class="font-bold text-slate-800" id="detailNisnSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1">Jenis Kelamin</p><p class="font-bold text-slate-800" id="detailKelaminSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1">Asal Sekolah</p><p class="font-bold text-slate-800" id="detailAsalSiswa">-</p></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm border-t border-indigo-100 pt-3">
+                        <div><p class="text-slate-500 mb-1">Alamat Lengkap</p><p class="font-bold text-slate-800" id="detailAlamatSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1">No. HP Siswa</p><p class="font-bold text-slate-800" id="detailHpSiswa">-</p></div>
+                    </div>
+                </div>
+
+                <div class="mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-slate-500 font-semibold">Status Seleksi SPMB Anda:</h3>
+                        <p class="text-xs text-slate-400 mt-1">Status ini ditentukan berdasarkan hasil verifikasi panitia.</p>
+                    </div>
+                    <div id="badgeStatusSiswa" class="px-6 py-2 rounded-full text-lg font-bold shadow-sm"></div>
+                </div>
+
+                <h3 class="text-xl font-bold mb-4 text-slate-800"><i class="fas fa-folder-open text-orange-500 mr-2"></i>Ceklis Kelengkapan Berkas</h3>
+                <div id="berkasSiswaList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
+
+                <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl shrink-0"><i class="fab fa-whatsapp"></i></div>
+                    <div>
+                        <h4 class="font-bold text-green-800 text-sm">Ada kendala berkas? (Info & Grup WA)</h4>
+                        <p class="text-xs text-green-700">Hubungi Admin: Muhammad Hasratul</p>
+                        <a href="https://wa.me/6281527008924" target="_blank" class="text-sm font-bold text-green-600 hover:text-green-800 underline">081527008924</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-admin" class="page-section">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-6 border-b border-slate-200 pb-4 gap-4">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1 current-date"><i class="far fa-calendar-alt mr-1"></i> Memuat tanggal...</p>
+                        <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-user-shield text-indigo-600 mr-2"></i>Halo, Admin <span id="namaAdminProfile" class="text-indigo-600"></span>!</h2>
+                        <p class="text-slate-500 text-sm mt-1">Panel Manajemen Calon Siswa SPMB</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="loadDataAdmin()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl font-semibold hover:bg-slate-200 transition" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                        <button onclick="logout()" class="bg-red-50 text-red-600 px-5 py-2 rounded-xl font-semibold hover:bg-red-100 border border-red-100 transition"><i class="fas fa-power-off mr-2"></i>Keluar</button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-5 gap-4">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fas fa-users text-indigo-500 mr-2"></i>Daftar Pendaftar</h3>
+                        <button onclick="bukaModalSiswa('tambah')" class="w-full md:w-auto bg-green-600 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-green-700 transition shadow-md"><i class="fas fa-plus mr-2"></i>Tambah Siswa</button>
+                    </div>
+                    
+                    <div class="overflow-x-auto rounded-xl border border-slate-100">
+                        <table class="w-full text-left border-collapse min-w-[1000px]">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider border-b border-slate-200">
+                                <th class="p-4 font-semibold">Nama Siswa</th>
+                                <th class="p-4 font-semibold">NISN</th>
+                                <th class="p-4 font-semibold">L/P</th>
+                                <th class="p-4 font-semibold">Asal Sekolah</th>
+                                <th class="p-4 font-semibold">Jalur</th>
+                                <th class="p-4 font-semibold">Status</th>
+                                <th class="p-4 font-semibold text-center">Aksi Manajemen</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelDataAdmin" class="text-sm divide-y divide-slate-100"></tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modalGantiPassword" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+                <div class="bg-white p-6 md:p-8 rounded-3xl max-w-md w-full shadow-2xl">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"><i class="fas fa-user-lock"></i></div>
+                        <h3 class="text-xl font-bold text-slate-800">Ubah Password Default!</h3>
+                        <p class="text-slate-600 text-sm mt-2">Ini adalah login pertamamu. Silakan ubah password default (NISN) demi keamanan data kamu.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Password Baru</label>
+                            <div class="relative">
+                                <input type="password" id="newPass1" class="w-full pl-4 pr-10 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <button type="button" onclick="togglePassword('newPass1', 'eyeIcon1')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400">
+                                    <i id="eyeIcon1" class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Ulangi Password Baru</label>
+                            <div class="relative">
+                                <input type="password" id="newPass2" class="w-full pl-4 pr-10 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <button type="button" onclick="togglePassword('newPass2', 'eyeIcon2')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400">
+                                    <i id="eyeIcon2" class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="simpanPasswordBaru()" class="w-full bg-yellow-500 text-white font-bold py-3.5 rounded-xl hover:bg-yellow-600 transition shadow-lg mt-4 flex justify-center items-center">
+                            <i class="fas fa-save mr-2"></i>Simpan Password
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modalFormAdmin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 overflow-y-auto p-4 py-10">
+                <div class="bg-white p-6 md:p-8 rounded-3xl max-w-4xl w-full shadow-2xl relative">
+                    <h3 id="judulModalAdmin" class="text-2xl font-bold text-slate-800 mb-6 border-b pb-3">Tambah Siswa</h3>
+                    <input type="hidden" id="formAdminMode">
+                    <input type="hidden" id="formAdminNisnLama">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 max-h-[55vh] overflow-y-auto pr-3 pb-4">
+                        
+                        <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-1"><i class="fas fa-id-badge mr-2"></i>Identitas Utama</div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap</label><input type="text" id="formAdminNama" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">NISN (Sbg Password)</label><input type="number" id="formAdminNisn" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jenis Kelamin</label>
+                            <select id="formAdminKelamin" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
+                        </div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Asal Sekolah</label><input type="text" id="formAdminAsal" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div class="lg:col-span-2"><label class="block text-sm font-semibold text-slate-700 mb-1">Alamat Lengkap</label><input type="text" id="formAdminAlamat" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Siswa</label><input type="number" id="formAdminHpSiswa" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        
+                        <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-4"><i class="fas fa-users mr-2"></i>Data Orang Tua & Wali</div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ayah</label><input type="text" id="formAdminNamaAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ayah</label><input type="number" id="formAdminHpAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div class="hidden lg:block"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ibu</label><input type="text" id="formAdminNamaIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ibu</label><input type="number" id="formAdminHpIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div class="hidden lg:block"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Wali (Opsional)</label><input type="text" id="formAdminNamaWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Wali (Opsional)</label><input type="number" id="formAdminHpWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        
+                        <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-4"><i class="fas fa-clipboard-check mr-2"></i>Status SPMB</div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jalur SPMB</label>
+                            <select id="formAdminJalur" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"><option value="Domisili">Domisili</option><option value="Afirmasi">Afirmasi</option><option value="Mutasi">Mutasi</option><option value="Prestasi Akademik">Prestasi Akademik</option><option value="Prestasi Non Akademik">Prestasi Non Akademik</option></select>
+                        </div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Status Lulus</label>
+                            <select id="formAdminStatus" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+								<option value="Proses">Proses</option>
+								<option value="Menunggu Pengumuman">Menunggu Pengumuman</option> <option value="Lulus">Lulus</option>
+								<option value="Tidak Lulus">Tidak Lulus</option>
+							</select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 justify-end pt-4 border-t border-slate-100">
+                        <button onclick="document.getElementById('modalFormAdmin').classList.add('hidden')" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition">Batal</button>
+                        <button onclick="simpanSiswaAdmin()" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md transition"><i class="fas fa-save mr-2"></i>Simpan Data</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="modalBerkasAdmin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 overflow-y-auto p-4 py-10">
+                <div class="bg-white p-6 md:p-8 rounded-3xl max-w-5xl w-full shadow-2xl relative">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2"><i class="fas fa-clipboard-check text-indigo-500 mr-2"></i>Ceklis Berkas Siswa</h3>
+                    <p class="text-slate-500 text-sm mb-6 pb-4 border-b border-slate-100">NISN Siswa: <span id="berkasAdminNisn" class="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"></span></p>
+                    
+                    <div id="formBerkasContainer" class="space-y-3 max-h-[55vh] overflow-y-auto pr-2 mb-6"></div>
+                    
+                    <div class="flex gap-3 justify-end pt-4 border-t border-slate-100">
+                        <button onclick="document.getElementById('modalBerkasAdmin').classList.add('hidden')" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition">Tutup</button>
+                        <button onclick="simpanBerkasAdmin()" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md transition"><i class="fas fa-save mr-2"></i>Simpan Perubahan</button>
+                    </div>
+                </div>
+            </div>
+
+        </div> </div> <footer class="w-full text-center pb-6 text-white text-sm font-medium opacity-90 drop-shadow-md">
+        &copy; Hak Cipta SPMB 2026 UPT SPF SMP NEGERI 16 MAKASSAR <br>
+        <span class="text-xs font-normal opacity-75 mt-1 block">Powered by Mappaguru Online</span>
+    </footer>
+
+    <script>
+        // MASUKKAN URL WEB APP GOOGLE APPS SCRIPT DI SINI!
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxSuAfyyN0pph8DAocWqdmYP0Zxf7W_o-opTaUQKfgynfdB49jgtdnFa0pe2GgmY2ZO6A/exec'; 
+
+        // State Global
+        let currentUser = null; 
+
+        // Fungsi Ambil Tanggal Hari Ini (Untuk Header)
+        function updateDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date().toLocaleDateString('id-ID', options);
+            document.querySelectorAll('.current-date').forEach(el => el.innerHTML = `<i class="far fa-calendar-alt mr-1"></i> ${today}`);
+        }
+
+        // Fungsi Routing Halaman
+        function navigate(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            // Bersihkan form
+            if(pageId === 'page-login') document.getElementById('formLogin').reset();
+            if(pageId === 'page-cek-status') {
+                document.getElementById('inputNisnCek').value = '';
+                document.getElementById('hasilCekStatus').classList.add('hidden');
+            }
+        }
+
+        async function logout() {
+            const konfirmasi = await Swal.fire({
+                title: 'Yakin Ingin Keluar?',
+                text: "Sesi Anda akan diakhiri.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Ya, Keluar!',
+                cancelButtonText: 'Batal'
+            });
+
+            if (konfirmasi.isConfirmed) {
+                currentUser = null;
+                Swal.fire('Berhasil Keluar', 'Sampai jumpa lagi!', 'success');
+                navigate('page-landing');
+            }
+        }
+
+        // Fungsi Memanggil API (GAS)
+        async function callAPI(action, data) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: action, data: data })
+                });
+                return await response.json();
+            } catch (error) {
+                console.error("Error API:", error);
+                Swal.fire('Koneksi Gagal', 'Pastikan URL GAS sudah benar dan kamu terhubung internet.', 'error');
+                return null;
+            }
+        }
+
+        // ==========================================
+        // FITUR 1: LOGIN SISTEM
+        // ==========================================
+        async function prosesLogin(e) {
+            e.preventDefault(); 
+            const user = document.getElementById('loginUsername').value;
+            const pass = document.getElementById('loginPassword').value;
+
+            // Loading Alert Keren & Simpel
+            Swal.fire({
+                html: `
+                    <div class="py-4">
+                        <div class="relative w-16 h-16 mx-auto mb-5">
+                            <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-indigo-500 text-xl"><i class="fas fa-user-shield"></i></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Otentikasi...</h3>
+                        <p class="text-sm text-slate-500 mt-1">Sedang memverifikasi data Anda</p>
+                    </div>
+                `,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdrop: 'rgba(15, 23, 42, 0.6)',
+                customClass: { popup: 'rounded-3xl shadow-2xl border border-white' }
+            });
+
+            const result = await callAPI('login', { username: user, password: pass });
+            Swal.close();
+
+            if (result && result.status === 'success') {
+                currentUser = result.data; 
+                currentUser.passwordAktif = pass; 
+
+                if (result.role === 'admin') {
+                    document.getElementById('namaAdminProfile').innerText = result.data.nama;
+                    navigate('page-admin'); 
+                    loadDataAdmin(); 
+                }
+                else if (result.role === 'siswa') {
+                    if (result.requirePasswordChange) {
+                        document.getElementById('modalGantiPassword').classList.remove('hidden');
+                    } else {
+                        masukDashboardSiswa();
+                    }
+                }
+            } else {
+                Swal.fire('Gagal Login', result ? result.message : 'Terjadi kesalahan sistem', 'error');
+            }
+        }
+
+        // ==========================================
+        // FITUR 2: GANTI PASSWORD
+        // ==========================================
+        async function simpanPasswordBaru() {
+            const p1 = document.getElementById('newPass1').value;
+            const p2 = document.getElementById('newPass2').value;
+
+            if (!p1 || !p2) return Swal.fire('Peringatan', 'Password tidak boleh kosong!', 'warning');
+            if (p1 !== p2) return Swal.fire('Gagal', 'Kedua password tidak sama. Ulangi!', 'error');
+            if (p1 === currentUser.passwordAktif) return Swal.fire('Gagal', 'Password baru tidak boleh sama dengan NISN!', 'warning');
+
+            // Loading Keren Simpan Data
+            Swal.fire({
+                html: `
+                    <div class="py-4">
+                        <div class="relative w-16 h-16 mx-auto mb-5">
+                            <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-indigo-500 text-xl"><i class="fas fa-cloud-upload-alt"></i></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Menyimpan Data...</h3>
+                        <p class="text-sm text-slate-500 mt-1">Mengirim data ke Spreadsheet</p>
+                    </div>
+                `,
+                showConfirmButton: false, allowOutsideClick: false, background: 'rgba(255, 255, 255, 0.95)', backdrop: 'rgba(15, 23, 42, 0.6)', customClass: { popup: 'rounded-3xl shadow-2xl border border-white' }
+            });
+
+            const result = await callAPI('gantiPassword', { 
+                nisn: currentUser.nisn, 
+                passwordLama: currentUser.passwordAktif, 
+                passwordBaru: p1 
+            });
+
+            if (result && result.status === 'success') {
+                Swal.fire('Berhasil!', result.message, 'success').then(() => {
+                    document.getElementById('modalGantiPassword').classList.add('hidden');
+                    masukDashboardSiswa(); 
+                });
+            } else {
+                Swal.fire('Gagal', 'Gagal merubah password.', 'error');
+            }
+        }
+
+        // ==========================================
+        // FITUR 3: LOAD DASHBOARD SISWA
+        // ==========================================
+        async function masukDashboardSiswa() {
+            navigate('page-siswa');
+            document.getElementById('namaSiswaProfile').innerText = currentUser.nama;
+            
+            Swal.fire({ title: 'Memuat Data Anda...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            const result = await callAPI('cekStatusSiswa', { nisn: currentUser.nisn });
+            Swal.close();
+
+            if (result && result.status === 'success') {
+                document.getElementById('detailNamaSiswa').innerText = result.profil.nama;
+                document.getElementById('detailNisnSiswa').innerText = result.profil.nisn;
+                document.getElementById('detailKelaminSiswa').innerText = result.profil.kelamin || '-';
+                document.getElementById('detailAsalSiswa').innerText = result.profil.asalSekolah || '-';
+                // Tambahan pemanggil data ke HTML:
+                document.getElementById('detailAlamatSiswa').innerText = result.profil.alamatLengkap || '-';
+                document.getElementById('detailHpSiswa').innerText = result.profil.noHpSiswa || '-';
+                
+                renderKartuStatusDanBerkas(result.profil, result.berkas, 'siswa');
+            }
+        }
+
+        // ==========================================
+        // FITUR 4: CEK STATUS (ORANG TUA & SISWA)
+        // ==========================================
+        async function prosesCekStatus() {
+            const nisn = document.getElementById('inputNisnCek').value;
+            if (!nisn) return Swal.fire('Info', 'Masukkan NISN terlebih dahulu!', 'info');
+
+            Swal.fire({ title: 'Mencari Data...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            const result = await callAPI('cekStatusSiswa', { nisn: nisn });
+            Swal.close();
+
+            const hasilDiv = document.getElementById('hasilCekStatus');
+            if (result && result.status === 'success') {
+                hasilDiv.classList.remove('hidden');
+                hasilDiv.innerHTML = renderHTMLBerkas(result.profil, result.berkas, 'ortu');
+            } else {
+                Swal.fire('Tidak Ditemukan', result ? result.message : 'Pastikan NISN benar.', 'error');
+                hasilDiv.classList.add('hidden');
+            }
+        }
+
+        function renderKartuStatusDanBerkas(profil, berkas, modeTarget) {
+            let badgeClass = 'bg-yellow-100 text-yellow-700 border border-yellow-300';
+            let iconStatus = '<i class="fas fa-spinner fa-spin mr-2"></i>';
+            
+            if(profil.statusSPMB.toLowerCase() === 'lulus') {
+                badgeClass = 'bg-green-100 text-green-800 border border-green-300 shadow-sm';
+                iconStatus = '<i class="fas fa-check-circle mr-2"></i>';
+            } else if (profil.statusSPMB.toLowerCase() === 'tidak lulus') {
+                badgeClass = 'bg-red-100 text-red-800 border border-red-300 shadow-sm';
+                iconStatus = '<i class="fas fa-times-circle mr-2"></i>';
+			} else if (profil.statusSPMB.toLowerCase() === 'menunggu pengumuman') {
+				// Tampilan warna biru untuk Menunggu Pengumuman
+				badgeClass = 'bg-blue-100 text-blue-800 border border-blue-300 shadow-sm';
+				iconStatus = '<i class="fas fa-hourglass-half mr-2"></i>';
+            }
+
+            if (modeTarget === 'siswa') {
+                const badgeEl = document.getElementById('badgeStatusSiswa');
+                badgeEl.className = `px-6 py-2.5 rounded-xl text-lg font-bold ${badgeClass}`;
+                badgeEl.innerHTML = `${iconStatus} ${profil.statusSPMB.toUpperCase()}`;
+                document.getElementById('berkasSiswaList').innerHTML = generateGridBerkas(berkas);
+            }
+        }
+
+        function renderHTMLBerkas(profil, berkas, modeTarget) {
+            let badgeColor = profil.statusSPMB.toLowerCase() === 'lulus' ? 'text-green-600' : (profil.statusSPMB.toLowerCase() === 'tidak lulus' ? 'text-red-600' : 'text-yellow-600');
+            return `
+                <div class="border-b border-slate-200 pb-5 mb-5 bg-slate-50 p-4 rounded-xl">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-1">${profil.nama}</h3>
+                    <p class="text-sm text-slate-600"><i class="fas fa-school mr-1 text-slate-400"></i> Asal: ${profil.asalSekolah || '-'} <span class="mx-2 text-slate-300">|</span> <i class="fas fa-route mr-1 text-slate-400"></i> Jalur: ${profil.jalurSPMB}</p>
+                    <div class="mt-3 inline-block px-4 py-1.5 rounded-lg bg-white border border-slate-200 shadow-sm font-bold ${badgeColor}">
+                        Status Akhir: ${profil.statusSPMB.toUpperCase()}
+                    </div>
+                </div>
+                <h4 class="font-bold text-slate-700 mb-4"><i class="fas fa-list-check text-indigo-500 mr-2"></i>Detail Pengecekan Berkas:</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    ${generateGridBerkas(berkas)}
+                </div>
+            `;
+        }
+
+        function generateGridBerkas(berkasData) {
+            if (typeof berkasData === 'string') {
+                return `<div class="col-span-full text-center py-6 text-slate-500 bg-slate-50 border border-dashed border-slate-300 rounded-xl italic">${berkasData}</div>`;
+            }
+
+            const daftarBerkas = [
+                { key: 'kk', label: 'Kartu Keluarga (KK)' },
+                { key: 'akta', label: 'Akta Kelahiran' },
+                { key: 'ijazah', label: 'Ijazah / SKL' },
+                { key: 'faktaIntegritas', label: 'Fakta Integritas' },
+                { key: 'rapor', label: 'Nilai Rapor' },
+                { key: 'foto', label: 'Pas Foto' },
+                { key: 'pkh', label: 'Kartu PKH (Afirmasi)' },
+                { key: 'mutasi', label: 'SK Mutasi Orang Tua' },
+                { key: 'prestasiAkademik', label: 'Prestasi Akademik' },
+                { key: 'prestasiNonAkademik', label: 'Sertifikat Non-Akademik' }
+            ];
+
+            let html = '';
+            daftarBerkas.forEach(item => {
+                const b = berkasData[item.key];
+                const isLengkap = (b.status === true || b.status === 'TRUE' || b.status === 'Lengkap' || b.status === 'Centang');
+                const isTidakDipakai = (b.status === 'Berkas Tidak digunakan');
+                
+                let icon, bgCard, textColor, statusText;
+                
+                if (isLengkap) {
+                    icon = '<div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xl shrink-0"><i class="fas fa-check"></i></div>';
+                    bgCard = 'bg-white border-green-100';
+                    textColor = 'text-green-600';
+                    statusText = 'Lengkap & Valid';
+                } else if (isTidakDipakai) {
+                    icon = '<div class="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-lg shrink-0"><i class="fas fa-minus"></i></div>';
+                    bgCard = 'bg-slate-50 border-slate-200 opacity-70';
+                    textColor = 'text-slate-500';
+                    statusText = 'Tidak Diperlukan';
+                } else {
+                    icon = '<div class="w-10 h-10 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-xl shrink-0"><i class="fas fa-times"></i></div>';
+                    bgCard = 'bg-red-50 border-red-100';
+                    textColor = 'text-red-600';
+                    statusText = b.status === 'Belum' ? 'Belum Diperiksa' : 'Bermasalah / Kurang';
+                }
+                
+                html += `
+                    <div class="flex items-start p-3.5 rounded-xl border shadow-sm ${bgCard}">
+                        ${icon}
+                        <div class="ml-3 w-full">
+                            <h5 class="font-bold text-slate-800 text-sm md:text-base">${item.label}</h5>
+                            <p class="text-xs ${textColor} font-semibold mt-0.5">${statusText}</p>
+                            ${(!isLengkap && !isTidakDipakai && b.catatan) ? `<div class="mt-2 text-xs text-slate-700 bg-white p-2.5 rounded-lg border border-red-200 shadow-sm"><i class="fas fa-comment-dots text-red-400 mr-1.5"></i><b>Catatan Admin:</b><br>${b.catatan}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            return html;
+        }
+
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        // ==========================================
+        // FITUR TABEL ADMIN
+        // ==========================================
+        async function loadDataAdmin() {
+            const tbody = document.getElementById('tabelDataAdmin');
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center p-8 text-slate-500"><i class="fas fa-circle-notch fa-spin text-2xl mb-2 text-indigo-500"></i><br>Memuat data pendaftar...</td></tr>';
+            
+            const result = await callAPI('getSemuaSiswa', {});
+            if (result && result.status === 'success') {
+                let html = '';
+                if(result.data.length === 0) {
+                    html = '<tr><td colspan="7" class="text-center p-8 text-slate-500 bg-slate-50 rounded-b-xl">Belum ada data pendaftar masuk.</td></tr>';
+                } else {
+                    window.dataSiswaAdmin = result.data; // Simpan ke global
+                    result.data.forEach(siswa => {
+                        let badgeClass = siswa.status.toLowerCase() === 'lulus' ? 'bg-green-100 text-green-700 border border-green-200' : 
+										 (siswa.status.toLowerCase() === 'tidak lulus' ? 'bg-red-100 text-red-700 border border-red-200' : 
+										 (siswa.status.toLowerCase() === 'menunggu pengumuman' ? 'bg-blue-100 text-blue-700 border border-blue-200' : 
+										 'bg-yellow-100 text-yellow-700 border border-yellow-200'));
+                        let jk = siswa.kelamin === 'Laki-laki' ? 'L' : (siswa.kelamin === 'Perempuan' ? 'P' : '-');
+
+                        html += `
+                        <tr class="hover:bg-slate-50 transition duration-150">
+                            <td class="p-4 font-bold text-slate-800">${siswa.nama}</td>
+                            <td class="p-4 text-slate-600 font-medium">${siswa.nisn}</td>
+                            <td class="p-4 text-slate-600 font-medium">${jk}</td>
+                            <td class="p-4 text-slate-500 max-w-[150px] truncate" title="${siswa.asalSekolah}">${siswa.asalSekolah}</td>
+                            <td class="p-4 text-slate-500">${siswa.jalur}</td>
+                            <td class="p-4"><span class="px-3 py-1.5 rounded-lg text-xs font-bold ${badgeClass}">${siswa.status}</span></td>
+                            <td class="p-4 text-center space-x-1">
+                                <button onclick="bukaModalBerkasAdmin('${siswa.nisn}')" class="text-white bg-indigo-500 hover:bg-indigo-600 px-3 py-1.5 rounded-lg shadow-sm transition inline-flex items-center" title="Cek Berkas"><i class="fas fa-folder-open"></i></button>
+                                <button onclick="bukaModalSiswa('edit', '${siswa.nisn}')" class="text-white bg-amber-500 hover:bg-amber-600 px-3 py-1.5 rounded-lg shadow-sm transition inline-flex items-center" title="Edit Data"><i class="fas fa-edit"></i></button>
+                                <button onclick="hapusSiswaAdmin('${siswa.nisn}')" class="text-white bg-rose-500 hover:bg-rose-600 px-3 py-1.5 rounded-lg shadow-sm transition inline-flex items-center" title="Hapus Siswa"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                tbody.innerHTML = html;
+            } else {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center p-8 text-red-500 bg-red-50 rounded-b-xl"><i class="fas fa-exclamation-triangle mr-2"></i>Gagal memuat data. Periksa koneksi atau URL GAS.</td></tr>';
+            }
+        }
+
+        // ==========================================
+        // FITUR CEKLIS BERKAS ADMIN
+        // ==========================================
+        const daftarBerkasAdmin = [
+            { key: 'KK', label: 'Kartu Keluarga (KK)' },
+            { key: 'Akta', label: 'Akta Kelahiran' },
+            { key: 'Ijazah', label: 'Ijazah / SKL' },
+            { key: 'FaktaIntegritas', label: 'Fakta Integritas' },
+            { key: 'Rapor', label: 'Nilai Rapor' },
+            { key: 'Foto', label: 'Pas Foto' },
+            { key: 'PKH', label: 'Bukti PKH (Afirmasi)' },
+            { key: 'Mutasi', label: 'SK Mutasi' },
+            { key: 'PrestasiAkademik', label: 'Prestasi Akademik' },
+            { key: 'PrestasiNonAkademik', label: 'Prestasi Non-Akademik' }
+        ];
+
+        async function bukaModalBerkasAdmin(nisn) {
+            document.getElementById('berkasAdminNisn').innerText = nisn;
+            
+            let html = '';
+            daftarBerkasAdmin.forEach(b => {
+                html += `
+                <div class="p-4 border border-slate-200 rounded-xl bg-slate-50 hover:bg-white transition shadow-sm">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
+                        <span class="font-bold text-slate-800 mb-2 md:mb-0 text-sm md:text-base">${b.label}</span>
+                        <select id="status_${b.key}" class="w-full md:w-auto px-4 py-2 rounded-lg border text-sm font-semibold outline-none focus:ring-2 focus:ring-indigo-400 bg-white">
+                            <option value="Belum">Belum Diperiksa</option>
+                            <option value="Lengkap">Lengkap & Valid</option>
+                            <option value="Bermasalah">Bermasalah / Kurang</option>
+                            <option value="Berkas Tidak digunakan">Berkas Tidak Digunakan</option>
+                        </select>
+                    </div>
+                    <input type="text" id="catatan_${b.key}" placeholder="Catatan opsional jika bermasalah..." class="w-full px-4 py-2 text-sm rounded-lg border outline-none focus:ring-2 focus:ring-indigo-400 bg-white">
+                </div>`;
+            });
+            document.getElementById('formBerkasContainer').innerHTML = html;
+            document.getElementById('modalBerkasAdmin').classList.remove('hidden');
+
+            Swal.fire({ title: 'Memuat Data Berkas...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+            const result = await callAPI('cekStatusSiswa', { nisn: nisn });
+            Swal.close();
+
+            if (result && result.status === 'success' && typeof result.berkas === 'object') {
+                const apiKeys = ['kk', 'akta', 'ijazah', 'faktaIntegritas', 'rapor', 'foto', 'pkh', 'mutasi', 'prestasiAkademik', 'prestasiNonAkademik'];
+                
+                daftarBerkasAdmin.forEach((b, index) => {
+                    const apiKey = apiKeys[index];
+                    if(result.berkas[apiKey]) {
+                        const statusVal = result.berkas[apiKey].status;
+                        
+                        if(statusVal === true || statusVal === 'TRUE' || statusVal === 'Lengkap' || statusVal === 'Centang') {
+                            document.getElementById('status_'+b.key).value = 'Lengkap';
+                        } else if (statusVal === 'Berkas Tidak digunakan') {
+                            document.getElementById('status_'+b.key).value = 'Berkas Tidak digunakan';
+                        } else if (statusVal && statusVal !== 'Belum') {
+                            document.getElementById('status_'+b.key).value = 'Bermasalah';
+                        }
+                        document.getElementById('catatan_'+b.key).value = result.berkas[apiKey].catatan || '';
+                    }
+                });
+            }
+        }
+
+        async function simpanBerkasAdmin() {
+            const nisn = document.getElementById('berkasAdminNisn').innerText;
+            let updateData = {};
+            
+            daftarBerkasAdmin.forEach(b => {
+                updateData['status' + b.key] = document.getElementById('status_'+b.key).value;
+                updateData['catatan' + b.key] = document.getElementById('catatan_'+b.key).value;
+            });
+
+            // Loading Keren Simpan Berkas (Warna Kuning/Amber)
+            Swal.fire({
+                html: `
+                    <div class="py-4">
+                        <div class="relative w-16 h-16 mx-auto mb-5">
+                            <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-amber-500 border-t-transparent animate-spin"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-amber-500 text-xl"><i class="fas fa-file-signature"></i></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Menyimpan Berkas...</h3>
+                        <p class="text-sm text-slate-500 mt-1">Memperbarui status dokumen</p>
+                    </div>
+                `,
+                showConfirmButton: false, allowOutsideClick: false, background: 'rgba(255, 255, 255, 0.95)', backdrop: 'rgba(15, 23, 42, 0.6)', customClass: { popup: 'rounded-3xl shadow-2xl border border-white' }
+            });
+            
+            const result = await callAPI('updateBerkas', { nisn: nisn, updateData: updateData });
+            
+            if (result && result.status === 'success') {
+                Swal.fire('Tersimpan!', 'Status kelengkapan berkas berhasil diperbarui.', 'success');
+                document.getElementById('modalBerkasAdmin').classList.add('hidden');
+            } else {
+                Swal.fire('Gagal', result ? result.message : 'Terjadi Kesalahan', 'error');
+            }
+        }
+        
+        // ==========================================
+        // FITUR CRUD MODAL ADMIN
+        // ==========================================
+        function bukaModalSiswa(mode, nisn='') {
+            document.getElementById('modalFormAdmin').classList.remove('hidden');
+            document.getElementById('formAdminMode').value = mode;
+            
+            if(mode === 'tambah') {
+                document.getElementById('judulModalAdmin').innerHTML = "<i class='fas fa-user-plus text-indigo-600 mr-2'></i> Tambah Siswa Baru";
+                document.getElementById('formAdminNisnLama').value = "";
+                document.getElementById('formAdminNama').value = "";
+                document.getElementById('formAdminNisn').value = "";
+                document.getElementById('formAdminKelamin').value = "Laki-laki";
+                document.getElementById('formAdminAsal').value = "";
+                document.getElementById('formAdminAlamat').value = "";
+                document.getElementById('formAdminHpSiswa').value = "";
+                document.getElementById('formAdminNamaAyah').value = "";
+                document.getElementById('formAdminHpAyah').value = "";
+                document.getElementById('formAdminNamaIbu').value = "";
+                document.getElementById('formAdminHpIbu').value = "";
+                document.getElementById('formAdminNamaWali').value = "";
+                document.getElementById('formAdminHpWali').value = "";
+                document.getElementById('formAdminJalur').value = "Domisili";
+                document.getElementById('formAdminStatus').value = "Proses";
+            } else {
+                document.getElementById('judulModalAdmin').innerHTML = "<i class='fas fa-user-edit text-amber-500 mr-2'></i> Edit Data Siswa";
+                // Cari data siswa dari array global yang ditarik saat load tabel
+                const siswa = window.dataSiswaAdmin.find(s => s.nisn.toString() === nisn.toString());
+                if(siswa) {
+                    document.getElementById('formAdminNisnLama').value = siswa.nisn;
+                    document.getElementById('formAdminNama').value = siswa.nama || "";
+                    document.getElementById('formAdminNisn').value = siswa.nisn || "";
+                    document.getElementById('formAdminKelamin').value = siswa.kelamin || "Laki-laki"; 
+                    document.getElementById('formAdminAsal').value = siswa.asalSekolah || "";       
+                    document.getElementById('formAdminAlamat').value = siswa.alamat || "";
+                    document.getElementById('formAdminHpSiswa').value = siswa.hpSiswa || "";
+                    document.getElementById('formAdminNamaAyah').value = siswa.namaAyah || "";
+                    document.getElementById('formAdminHpAyah').value = siswa.hpAyah || "";
+                    document.getElementById('formAdminNamaIbu').value = siswa.namaIbu || "";
+                    document.getElementById('formAdminHpIbu').value = siswa.hpIbu || "";
+                    document.getElementById('formAdminNamaWali').value = siswa.namaWali || "";
+                    document.getElementById('formAdminHpWali').value = siswa.hpWali || "";
+                    document.getElementById('formAdminJalur').value = siswa.jalur || "Domisili";
+                    document.getElementById('formAdminStatus').value = siswa.status || "Proses";
+                }
+            }
+        }
+
+        async function simpanSiswaAdmin() {
+            const mode = document.getElementById('formAdminMode').value;
+            const data = {
+                nisnLama: document.getElementById('formAdminNisnLama').value,
+                nama: document.getElementById('formAdminNama').value,
+                nisn: document.getElementById('formAdminNisn').value,
+                kelamin: document.getElementById('formAdminKelamin').value,
+                asalSekolah: document.getElementById('formAdminAsal').value,
+                alamat: document.getElementById('formAdminAlamat').value,
+                hpSiswa: document.getElementById('formAdminHpSiswa').value,
+                namaAyah: document.getElementById('formAdminNamaAyah').value,
+                hpAyah: document.getElementById('formAdminHpAyah').value,
+                namaIbu: document.getElementById('formAdminNamaIbu').value,
+                hpIbu: document.getElementById('formAdminHpIbu').value,
+                namaWali: document.getElementById('formAdminNamaWali').value,
+                hpWali: document.getElementById('formAdminHpWali').value,
+                jalurSPMB: document.getElementById('formAdminJalur').value,
+                statusSPMB: document.getElementById('formAdminStatus').value
+            };
+
+            if(!data.nama || !data.nisn) return Swal.fire('Data Tidak Lengkap', 'Nama dan NISN Wajib diisi!', 'warning');
+
+            // Loading Keren Simpan Data
+            Swal.fire({
+                html: `
+                    <div class="py-4">
+                        <div class="relative w-16 h-16 mx-auto mb-5">
+                            <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
+                            <div class="absolute inset-0 rounded-full border-4 border-indigo-500 border-t-transparent animate-spin"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-indigo-500 text-xl"><i class="fas fa-cloud-upload-alt"></i></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Menyimpan Data...</h3>
+                        <p class="text-sm text-slate-500 mt-1">Mengirim data ke Server sekolah</p>
+                    </div>
+                `,
+                showConfirmButton: false, allowOutsideClick: false, background: 'rgba(255, 255, 255, 0.95)', backdrop: 'rgba(15, 23, 42, 0.6)', customClass: { popup: 'rounded-3xl shadow-2xl border border-white' }
+            });
+            
+            let action = mode === 'tambah' ? 'tambahSiswa' : 'editSiswa';
+            const result = await callAPI(action, data);
+            
+            if(result && result.status === 'success') {
+                Swal.fire('Berhasil!', result.message, 'success');
+                document.getElementById('modalFormAdmin').classList.add('hidden');
+                loadDataAdmin(); 
+            } else {
+                Swal.fire('Gagal', result ? result.message : 'Error Server', 'error');
+            }
+        }
+
+        async function hapusSiswaAdmin(nisn) {
+            const konfirmasi = await Swal.fire({
+                title: 'Yakin Hapus Data?',
+                text: "Data yang dihapus tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Ya, Hapus Permanen!',
+                cancelButtonText: 'Batal'
+            });
+
+            if (konfirmasi.isConfirmed) {
+                // Loading Keren Hapus Data (Warna Merah)
+                Swal.fire({
+                    html: `
+                        <div class="py-4">
+                            <div class="relative w-16 h-16 mx-auto mb-5">
+                                <div class="absolute inset-0 rounded-full border-4 border-slate-100"></div>
+                                <div class="absolute inset-0 rounded-full border-4 border-rose-500 border-t-transparent animate-spin"></div>
+                                <div class="absolute inset-0 flex items-center justify-center text-rose-500 text-xl"><i class="fas fa-trash-alt"></i></div>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">Menghapus...</h3>
+                            <p class="text-sm text-slate-500 mt-1">Menghapus data secara permanen</p>
+                        </div>
+                    `,
+                    showConfirmButton: false, allowOutsideClick: false, background: 'rgba(255, 255, 255, 0.95)', backdrop: 'rgba(15, 23, 42, 0.6)', customClass: { popup: 'rounded-3xl shadow-2xl border border-white' }
+                });
+                const result = await callAPI('hapusSiswa', { nisn: nisn });
+                if(result && result.status === 'success') {
+                    Swal.fire('Terhapus!', 'Data siswa telah dihapus.', 'success');
+                    loadDataAdmin(); 
+                } else {
+                    Swal.fire('Gagal', 'Terjadi kesalahan saat menghapus.', 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

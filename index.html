@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPMB Online - UPT SPF SMP NEGERI 16 MAKASSAR</title>
-	
-	<link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2">
+    <title>SPMB 2026 - UPT SPF SMP NEGERI 16 MAKASSAR</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        primary: '#4F46E5', secondary: '#EC4899',
+                        primary: '#1e3a8a', 
+                        secondary: '#2563eb',
+                        accent: '#f59e0b'
                     }
                 }
             }
@@ -24,381 +26,450 @@
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-
-	<link rel="stylesheet" href="style.min.css">
-	
+    <link rel="stylesheet" href="style.min.css">
 </head>
-<body class="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 min-h-screen text-slate-800 font-sans flex flex-col relative" onload="updateDate()">
+<body class="bg-slate-50 min-h-screen text-slate-800 font-sans flex flex-col relative" onload="updateDate()">
 
-
-	<div id="welcomePopup" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-[100] p-4">
-		<div class="bg-white p-6 md:p-10 rounded-[2rem] max-w-lg w-full shadow-2xl text-center relative overflow-hidden">
-			<div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-			
-			<img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo" class="h-16 mx-auto mb-4 object-contain">
-			
-			<h2 class="text-lg sm:text-2xl md:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 mb-4 tracking-tight">
-				UPT SPF SMP NEGERI 16 MAKASSAR
-			</h2>
-			<div class="bg-indigo-50 border border-indigo-100 text-indigo-700 p-3.5 rounded-xl text-sm font-medium mb-5 shadow-sm">
-				<i class="fas fa-info-circle mr-1.5"></i> Selamat datang di portal layanan satu pintu. Aplikasi ini digunakan untuk pendataan awal dan pemantauan status berkas Calon Siswa Baru UPT SPF SMP Negeri 16 Makassar tahun ajaran 2026/2027.
-			</div>
-			
-			<p class="text-slate-500 text-sm mb-6 font-medium">Silakan pilih tujuan Anda di bawah ini untuk melanjutkan:</p>
-
-            <div class="space-y-4">
-				<a href="https://spmb.makassarkota.go.id/" target="_blank" class="w-full bg-indigo-600 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-indigo-700 transition shadow-lg flex items-center justify-center text-sm md:text-base text-center">
-					<i class="fas fa-globe mr-2 shrink-0 text-lg"></i> 
-					<span class="leading-tight">Pendaftaran Resmi SPMB Pemerintah</span>
-				</a>
-				
-				<button onclick="bukaModalPendataan()" class="w-full bg-pink-500 text-white font-bold py-3.5 px-4 rounded-xl hover:bg-pink-600 transition shadow-lg flex items-center justify-center text-sm md:text-base text-center">
-					<i class="fas fa-user-plus mr-2 shrink-0 text-lg"></i> 
-					<span class="leading-tight">Pendataan Calon Murid (Internal)</span>
-				</button>
-				
-				<button onclick="tutupWelcomePopup()" class="w-full bg-slate-100 text-slate-600 font-bold py-3.5 px-4 rounded-xl hover:bg-slate-200 transition flex items-center justify-center border border-slate-200 text-sm md:text-base text-center">
-					<i class="fas fa-home mr-2 shrink-0 text-lg"></i> 
-					<span class="leading-tight">Menuju Beranda</span>
-				</button>
-			</div>
-        </div>
-    </div>
-
-    <div id="modalPendataan" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center z-[110] overflow-y-auto p-4 py-10">
-        <div class="bg-white p-6 md:p-8 rounded-3xl max-w-4xl w-full shadow-2xl relative">
-            <div class="flex justify-between items-center mb-6 border-b pb-3">
-                <h3 class="text-2xl font-bold text-slate-800"><i class="fas fa-user-edit text-pink-500 mr-2"></i>Form Pendataan Calon Murid</h3>
-                <button onclick="document.getElementById('modalPendataan').classList.add('hidden')" class="text-slate-400 hover:text-red-500 text-2xl transition"><i class="fas fa-times"></i></button>
+    <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-4">
+                    <img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo 1" class="h-10 md:h-12 w-auto object-contain">
+                    <img src="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2" alt="Logo 2" class="h-10 md:h-12 w-auto object-contain">
+                    <div class="hidden md:block border-l-2 border-slate-200 pl-4 ml-2">
+                        <h1 class="font-bold text-primary text-sm md:text-base leading-tight">SPMB 2026</h1>
+                        <p class="text-xs text-slate-500 font-medium">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <p class="text-xs font-semibold text-slate-500 hidden sm:block current-date"><i class="far fa-calendar-alt mr-1"></i> Memuat tanggal...</p>
+                </div>
             </div>
-
-            <form id="formPendataanSiswa" onsubmit="prosesPendataan(event)">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 max-h-[60vh] overflow-y-auto pr-3 pb-4 custom-scrollbar">
-                    
-                    <div class="col-span-full bg-indigo-50 text-indigo-700 p-3 rounded-xl text-sm font-semibold mb-2">
-                        <i class="fas fa-info-circle mr-2"></i> Pastikan data disesuaikan dengan dokumen asli (KK/Ijazah/SKL). NISN tidak dapat diubah setelah disimpan.
-                    </div>
-
-                    <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-1"><i class="fas fa-id-badge mr-2"></i>Identitas Utama</div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap</label><input type="text" id="pendataanNama" required class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">NISN (Sbg Password Login)</label><input type="number" id="pendataanNisn" required class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jenis Kelamin</label>
-                        <select id="pendataanKelamin" required class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
-                    </div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Asal Sekolah Dasar (SD)</label><input type="text" id="pendataanAsal" required class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div class="lg:col-span-2"><label class="block text-sm font-semibold text-slate-700 mb-1">Alamat Lengkap</label><input type="text" id="pendataanAlamat" required class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Siswa / WA (Opsional)</label><input type="number" id="pendataanHpSiswa" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-
-                    <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-4"><i class="fas fa-users mr-2"></i>Data Orang Tua & Wali</div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ayah</label><input type="text" id="pendataanNamaAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ayah</label><input type="number" id="pendataanHpAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div class="hidden lg:block"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ibu</label><input type="text" id="pendataanNamaIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ibu</label><input type="number" id="pendataanHpIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div class="hidden lg:block"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Wali (Opsional)</label><input type="text" id="pendataanNamaWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Wali (Opsional)</label><input type="number" id="pendataanHpWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-
-                    <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-4"><i class="fas fa-route mr-2"></i>Rencana Jalur Pendaftaran</div>
-                    <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jalur SPMB</label>
-                        <select id="pendataanJalur" required class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"><option value="Domisili">Domisili</option><option value="Afirmasi">Afirmasi</option><option value="Mutasi">Mutasi</option><option value="Prestasi Akademik">Prestasi Akademik</option><option value="Prestasi Non Akademik">Prestasi Non Akademik</option></select>
-                    </div>
-                </div>
-
-                <div class="flex gap-3 justify-end pt-4 border-t border-slate-100">
-                    <button type="button" onclick="document.getElementById('modalPendataan').classList.add('hidden')" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition">Batal</button>
-                    <button type="submit" class="px-6 py-2.5 bg-pink-600 text-white rounded-xl font-bold hover:bg-pink-700 shadow-md transition"><i class="fas fa-paper-plane mr-2"></i>Kirim Pendataan</button>
-                </div>
-            </form>
         </div>
-    </div>
-
-    <div class="flex-grow flex items-center justify-center p-4 md:p-8">
-        
-        <div class="w-full max-w-7xl glass-panel rounded-[2rem] p-6 md:p-12 relative">
+    </header>
+	
+	<!-- POPUP PENGUMUMAN ANTI PUNGLI -->
+    <div id="welcomePopup" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-[120] p-4 transition-opacity duration-300">
+        <div class="bg-white p-6 md:p-8 rounded-3xl max-w-2xl w-full shadow-2xl text-center relative overflow-hidden border-t-4 border-red-500">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm">
+                <i class="fas fa-bullhorn"></i>
+            </div>
             
-            <div id="page-landing" class="page-section active text-center">
-                <div class="flex justify-center items-center gap-6 mb-5">
-                        <img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo 1" class="h-16 md:h-20 w-auto object-contain drop-shadow-md">
-						<img src="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2" alt="Logo 2" class="h-16 md:h-20 w-auto object-contain drop-shadow-md">
-					</div>
-					
-                <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-700 to-pink-600 mb-4 tracking-tight">SPMB ONLINE 2026</h1>
-                <p class="text-slate-700 text-lg font-semibold mb-2">UPT SPF SMP NEGERI 16 MAKASSAR</p>
-                
-                <div class="max-w-2xl mx-auto mb-10">
-                    <p class="text-slate-500 leading-relaxed text-sm md:text-base">Aplikasi Sistem Penerimaan Murid Baru (SPMB) dirancang untuk mempermudah pemantauan status seleksi secara transparan, cepat, dan terintegrasi.</p>
+            <h2 class="text-xl md:text-2xl font-black text-slate-800 mb-2">PENGUMUMAN RESMI PANITIA SPMB 2026</h2>
+            <p class="text-sm font-bold text-secondary mb-6">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+            
+            <div class="text-sm text-slate-600 leading-relaxed space-y-4 text-left bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6">
+                <p>Selamat datang di Portal Layanan Satu Pintu Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran 2026/2027.</p>
+                <p>Guna mewujudkan proses penerimaan peserta didik yang bersih, transparan, dan berintegritas, bersama ini kami menegaskan bahwa:</p>
+                <ul class="list-decimal pl-5 space-y-2 font-medium text-slate-700">
+                    <li>Seluruh tahapan pendaftaran, seleksi berkas, hingga pengumuman kelulusan di UPT SPF SMP Negeri 16 Makassar adalah <span class="font-bold text-green-600">100% GRATIS</span> dan <span class="font-bold text-green-600">BEBAS PUNGLI</span>.</li>
+                    <li>Panitia SPMB <span class="font-bold text-red-600">TIDAK PERNAH</span> memungut biaya dalam bentuk apapun, serta tidak melayani pihak manapun yang menjanjikan jaminan kelulusan di luar jalur resmi.</li>
+                </ul>
+				<!-- KODE TAMBAHAN INFORMASI WEBSITE RESMI -->
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-4 rounded-r-lg">
+                    <p class="font-bold text-blue-800 text-xs mb-1"><i class="fas fa-info-circle mr-1"></i> Informasi Pendaftaran</p>
+                    <p class="text-xs text-blue-700 leading-relaxed">Portal ini khusus digunakan untuk <b>pemantauan kelengkapan berkas dan status seleksi internal</b> di UPT SPF SMP Negeri 16 Makassar. Adapun proses pendaftaran <i>online</i> terpusat wajib dilakukan melalui website resmi Pemerintah Kota Makassar: <a href="https://spmb.makassarkota.go.id" target="_blank" class="font-bold underline hover:text-blue-900">spmb.makassarkota.go.id</a>.</p>
                 </div>
-				
-				<div class="max-w-5xl mx-auto mb-10 space-y-6">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4" id="statistikStatusPublik">
+                <div class="bg-red-50 border-l-4 border-red-300 p-3 mt-4 rounded-r-lg">
+                    <p class="font-bold text-red-700 text-xs mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> Peringatan Penting!</p>
+                    <p class="text-xs text-red-600">Apabila terdapat oknum yang menghubungi Bapak/Ibu mengatasnamakan Panitia atau Sekolah dan meminta imbalan untuk kelulusan, hal tersebut adalah <b>PENIPUAN</b>. Mohon abaikan dan laporkan ke sekolah.</p>
+                </div>
+            </div>
+            
+            <button onclick="tutupWelcomePopup()" class="w-full bg-secondary text-white font-bold py-3.5 rounded-xl hover:bg-primary transition shadow-lg flex items-center justify-center">
+                <i class="fas fa-check-circle mr-2"></i> Saya Mengerti & Lanjutkan
+            </button>
+        </div>
+    </div>
+
+    <div class="flex-grow p-4 md:p-8">
+        <div class="w-full max-w-7xl mx-auto">
+            
+            <div id="page-landing" class="page-section active">
+                
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 md:p-12 items-center">
+                        <div>
+                            <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-secondary text-xs font-bold tracking-wider mb-4 border border-blue-100">TAHUN AJARAN 2026/2027</span>
+                            <h2 class="text-3xl md:text-5xl font-extrabold text-slate-800 mb-4 leading-tight">
+                                Portal Layanan Satu Pintu <span class="text-secondary">SPMB 2026</span>
+                            </h2>
+                            <p class="text-slate-600 leading-relaxed mb-8">
+                                Aplikasi ini sengaja dirancang untuk mempermudah pendataan, pemantauan status seleksi secara transparan, cepat, dan terintegrasi SPMB 2026 khusus untuk UPT SPF SMP Negeri 16 Makassar.
+                            </p>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button onclick="navigate('page-login')" class="bg-secondary text-white font-bold py-3 px-6 rounded-lg hover:bg-primary transition shadow-md flex items-center justify-center text-center">
+                                    <i class="fas fa-sign-in-alt mr-2"></i> Login Siswa
+                                </button>
+                                <a href="https://spmb.makassarkota.go.id/" target="_blank" class="bg-white text-slate-700 border border-slate-300 font-bold py-3 px-6 rounded-lg hover:bg-slate-50 transition flex items-center justify-center text-center">
+                                    <i class="fas fa-globe mr-2"></i> Web Resmi SPMB 2026
+                                </a>
+                            </div>
+                        </div>
                         
-                        <div class="bg-white/95 p-4 rounded-2xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(79,70,229,0.12)] hover:-translate-y-1 transition-all duration-300 text-center flex flex-col justify-between items-center relative overflow-hidden group">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                            <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition duration-300"><i class="fas fa-users"></i></div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total</p>
-                            <h3 class="text-2xl md:text-3xl font-black text-indigo-600 mt-0.5" id="statPubTotal">-</h3>
-                        </div>
-
-                        <div class="bg-white/95 p-4 rounded-2xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(245,158,11,0.12)] hover:-translate-y-1 transition-all duration-300 text-center flex flex-col justify-between items-center relative overflow-hidden group">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 to-yellow-500"></div>
-                            <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition duration-300"><i class="fas fa-spinner fa-spin"></i></div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Proses</p>
-                            <h3 class="text-2xl md:text-3xl font-black text-amber-500 mt-0.5" id="statPubProses">-</h3>
-                        </div>
-
-                        <div class="bg-white/95 p-4 rounded-2xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.12)] hover:-translate-y-1 transition-all duration-300 text-center flex flex-col justify-between items-center relative overflow-hidden group">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-sky-500"></div>
-                            <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition duration-300"><i class="fas fa-hourglass-half"></i></div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Menunggu</p>
-                            <h3 class="text-2xl md:text-3xl font-black text-blue-500 mt-0.5" id="statPubMenunggu">-</h3>
-                        </div>
-
-                        <div class="bg-white/95 p-4 rounded-2xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.12)] hover:-translate-y-1 transition-all duration-300 text-center flex flex-col justify-between items-center relative overflow-hidden group">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-green-500"></div>
-                            <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition duration-300"><i class="fas fa-graduation-cap"></i></div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Lulus</p>
-                            <h3 class="text-2xl md:text-3xl font-black text-green-600 mt-0.5" id="statPubLulus">-</h3>
-                        </div>
-
-                        <div class="bg-white/95 p-4 rounded-2xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(239,68,68,0.12)] hover:-translate-y-1 transition-all duration-300 text-center flex flex-col justify-between items-center relative overflow-hidden col-span-2 sm:col-span-1 group">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-400 to-red-500"></div>
-                            <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center text-sm mb-2 group-hover:scale-110 transition duration-300"><i class="fas fa-times-circle"></i></div>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tidak Lulus</p>
-                            <h3 class="text-2xl md:text-3xl font-black text-red-500 mt-0.5" id="statPubTidakLulus">-</h3>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap justify-center gap-2 text-xs font-semibold">
-                        <span class="bg-white/80 text-indigo-700 px-4 py-1.5 rounded-full border border-indigo-100 shadow-sm flex items-center gap-1.5 backdrop-blur-sm"><i class="fas fa-map-marker-alt text-indigo-400 text-[10px]"></i> Domisili: <span id="statJalurDomisili" class="font-black text-indigo-600">0</span></span>
-                        <span class="bg-white/80 text-pink-700 px-4 py-1.5 rounded-full border border-pink-100 shadow-sm flex items-center gap-1.5 backdrop-blur-sm"><i class="fas fa-hand-holding-heart text-pink-400 text-[10px]"></i> Afirmasi: <span id="statJalurAfirmasi" class="font-black text-pink-600">0</span></span>
-                        <span class="bg-white/80 text-blue-700 px-4 py-1.5 rounded-full border border-blue-100 shadow-sm flex items-center gap-1.5 backdrop-blur-sm"><i class="fas fa-exchange-alt text-blue-400 text-[10px]"></i> Mutasi: <span id="statJalurMutasi" class="font-black text-blue-600">0</span></span>
-                        <span class="bg-white/80 text-amber-700 px-4 py-1.5 rounded-full border border-amber-100 shadow-sm flex items-center gap-1.5 backdrop-blur-sm"><i class="fas fa-award text-amber-400 text-[10px]"></i> Akademik: <span id="statJalurAkd" class="font-black text-amber-600">0</span></span>
-                        <span class="bg-white/80 text-emerald-700 px-4 py-1.5 rounded-full border border-emerald-100 shadow-sm flex items-center gap-1.5 backdrop-blur-sm"><i class="fas fa-trophy text-emerald-400 text-[10px]"></i> Non Akademik: <span id="statJalurNon" class="font-black text-emerald-600">0</span></span>
+                        <div class="hidden md:flex justify-center items-center">
+							<div class="relative"> 
+								
+								<div class="w-72 h-72 bg-blue-50 rounded-full flex items-center justify-center border-8 border-white shadow-xl overflow-hidden relative">
+									<div class="absolute inset-0 bg-gradient-to-tr from-blue-200/40 to-transparent"></div>
+									<img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo Sekolah" class="w-40 h-40 object-contain drop-shadow-xl relative z-10">
+								</div>
+								
+								<div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white p-3 md:p-4 rounded-xl shadow-xl border border-slate-100 flex items-center gap-3 z-20 w-max">
+									<div class="bg-green-100 text-green-600 p-2 rounded-lg"><i class="fas fa-check-circle"></i></div>
+									<div>
+										<p class="text-xs text-slate-500 font-semibold">Status Sistem</p>
+										<p class="text-sm font-bold text-slate-800">Pendaftaran Dibuka</p>
+									</div>
+								</div>
+								
+							</div>
+						</div>
                     </div>
                 </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                    <button onclick="navigate('page-login')" class="text-left bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-secondary transition group">
+                        <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition duration-300"><i class="fas fa-sign-in-alt"></i></div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">1. Login Calon Siswa</h3>
+                        <p class="text-sm text-slate-600">Masuk ke panel siswa untuk memantau status kelengkapan berkas fisik yang diserahkan.</p>
+                    </button>
+                    <button onclick="navigate('page-cek-status')" class="text-left bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-accent transition group">
+                        <div class="w-12 h-12 bg-amber-100 text-accent rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition duration-300"><i class="fas fa-search"></i></div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">2. Cek Status Publik</h3>
+                        <p class="text-sm text-slate-600">Fasilitas bagi Orang Tua/Wali untuk melacak status seleksi hanya menggunakan NISN.</p>
+                    </button>
+                </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl mx-auto">
-                    <button onclick="navigate('page-login')" class="group relative p-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 border-l-4 border-indigo-500 flex items-center gap-4 text-left">
-                        <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shrink-0"><i class="fas fa-sign-in-alt"></i></div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-800">Login Sistem</h3>
-                            <p class="text-xs text-slate-500 mt-1">Masuk untuk Calon Siswa</p>
-                        </div>
-                    </button>
+                <h3 class="text-xl font-bold text-slate-800 mb-6 border-b pb-4"><i class="fas fa-chart-bar text-secondary mr-2"></i>Statistik Real-time SPMB</h3>
                     
-                    <button onclick="navigate('page-cek-status')" class="group relative p-5 bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 border-l-4 border-pink-500 flex items-center gap-4 text-left">
-                        <div class="w-14 h-14 bg-pink-50 text-pink-600 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300 shrink-0"><i class="fas fa-search"></i></div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-800">Cek Status</h3>
-                            <p class="text-xs text-slate-500 mt-1">Pantau berkas untuk Orang Tua</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-indigo-200 text-indigo-700 flex items-center justify-center text-xl shrink-0"><i class="fas fa-users"></i></div>
+                            <div>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase tracking-wider">Total Pendaftar</p>
+                                <h3 class="text-2xl font-black text-indigo-800 leading-none mt-1" id="statPubTotalDemografi">0</h3>
+                            </div>
                         </div>
-                    </button>
+                        <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-sky-200 text-sky-700 flex items-center justify-center text-xl shrink-0"><i class="fas fa-male"></i></div>
+                            <div>
+                                <p class="text-[10px] text-sky-600 font-bold uppercase tracking-wider">Laki-Laki</p>
+                                <h3 class="text-2xl font-black text-sky-800 leading-none mt-1" id="statPubLaki">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded-xl border border-pink-100 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-pink-200 text-pink-700 flex items-center justify-center text-xl shrink-0"><i class="fas fa-female"></i></div>
+                            <div>
+                                <p class="text-[10px] text-pink-600 font-bold uppercase tracking-wider">Perempuan</p>
+                                <h3 class="text-2xl font-black text-pink-800 leading-none mt-1" id="statPubPr">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="statistikStatusPublik">
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-100 text-center flex flex-col justify-between items-center relative overflow-hidden">
+                            <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-700 flex items-center justify-center text-sm mb-2"><i class="fas fa-spinner fa-spin"></i></div>
+                            <p class="text-[10px] text-amber-600 font-bold uppercase tracking-wider">Proses</p>
+                            <h3 class="text-2xl md:text-3xl font-black text-amber-600 mt-1" id="statPubProses">-</h3>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-center flex flex-col justify-between items-center relative overflow-hidden">
+                            <div class="w-10 h-10 rounded-full bg-blue-200 text-blue-700 flex items-center justify-center text-sm mb-2"><i class="fas fa-hourglass-half"></i></div>
+                            <p class="text-[10px] text-blue-600 font-bold uppercase tracking-wider">Menunggu</p>
+                            <h3 class="text-2xl md:text-3xl font-black text-blue-600 mt-1" id="statPubMenunggu">-</h3>
+                        </div>
+                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 text-center flex flex-col justify-between items-center relative overflow-hidden">
+                            <div class="w-10 h-10 rounded-full bg-emerald-200 text-emerald-700 flex items-center justify-center text-sm mb-2"><i class="fas fa-graduation-cap"></i></div>
+                            <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Lulus</p>
+                            <h3 class="text-2xl md:text-3xl font-black text-emerald-600 mt-1" id="statPubLulus">-</h3>
+                        </div>
+                        <div class="bg-rose-50 p-4 rounded-xl border border-rose-100 text-center flex flex-col justify-between items-center relative overflow-hidden">
+                            <div class="w-10 h-10 rounded-full bg-rose-200 text-rose-700 flex items-center justify-center text-sm mb-2"><i class="fas fa-times-circle"></i></div>
+                            <p class="text-[10px] text-rose-600 font-bold uppercase tracking-wider">Tidak Lulus</p>
+                            <h3 class="text-2xl md:text-3xl font-black text-rose-600 mt-1" id="statPubTidakLulus">-</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-slate-100">
+                        <h4 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 text-center">Sebaran Jalur Pendaftaran</h4>
+                        <div class="grid grid-cols-3 md:grid-cols-6 gap-3">
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center flex flex-col items-center hover:bg-white transition cursor-default">
+                                <i class="fas fa-map-marker-alt text-indigo-400 mb-1"></i>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase">Domisili</p>
+                                <h3 class="text-lg font-black text-indigo-600" id="statJalurDomisili">0</h3>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center flex flex-col items-center hover:bg-white transition cursor-default">
+                                <i class="fas fa-hand-holding-heart text-pink-400 mb-1"></i>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase">Afirmasi</p>
+                                <h3 class="text-lg font-black text-pink-600" id="statJalurAfirmasi">0</h3>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center flex flex-col items-center hover:bg-white transition cursor-default">
+                                <i class="fas fa-exchange-alt text-blue-400 mb-1"></i>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase">Mutasi</p>
+                                <h3 class="text-lg font-black text-blue-600" id="statJalurMutasi">0</h3>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center flex flex-col items-center hover:bg-white transition cursor-default">
+                                <i class="fas fa-award text-amber-400 mb-1"></i>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase">Prestasi Akademik</p>
+                                <h3 class="text-lg font-black text-amber-600" id="statJalurAkd">0</h3>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center flex flex-col items-center hover:bg-white transition cursor-default">
+                                <i class="fas fa-trophy text-emerald-400 mb-1"></i>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase">Prestasi Non Akademik</p>
+                                <h3 class="text-lg font-black text-emerald-600" id="statJalurNon">0</h3>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center flex flex-col items-center hover:bg-white transition cursor-default border-b-4 border-b-secondary">
+                                <i class="fas fa-building text-slate-500 mb-1"></i>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase">Offline</p>
+                                <h3 class="text-lg font-black text-slate-700" id="statJalurPemenuhan">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-10 border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="bg-white p-5 border-b border-slate-200">
+                            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+                                <div>
+                                    <h3 class="font-bold text-slate-800 text-lg"><i class="fas fa-list text-secondary mr-2"></i>Daftar Calon Murid Sementara</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Daftar calon murid yang mendaftar di UPT SPF SMP Negeri 16 Makassar.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-search text-slate-400"></i></div>
+                                    <input type="text" id="filterSearchPublik" onkeyup="terapkanFilterPublik()" placeholder="Cari Nama Pendaftar..." class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-secondary text-sm">
+                                </div>
+                                <select id="filterJalurPublik" onchange="terapkanFilterPublik()" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 outline-none text-sm bg-white text-slate-700 font-medium">
+                                    <option value="Semua">Semua Jalur</option>
+                                    <option value="Domisili">Domisili</option>
+                                    <option value="Afirmasi">Afirmasi</option>
+                                    <option value="Mutasi">Mutasi</option>
+                                    <option value="Prestasi Akademik">Prestasi Akademik</option>
+                                    <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
+                                    <option value="Pemenuhan Kuota (Offline)">Pemenuhan Kuota (Offline)</option>
+                                </select>
+                                <select id="filterStatusPublik" onchange="terapkanFilterPublik()" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 outline-none text-sm bg-white text-slate-700 font-medium">
+                                    <option value="Semua">Semua Status</option>
+                                    <option value="Proses">Proses</option>
+                                    <option value="Menunggu Pengumuman">Menunggu Pengumuman</option>
+                                    <option value="Lulus">Lulus</option>
+                                    <option value="Tidak Lulus">Tidak Lulus</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="overflow-x-auto max-h-[400px] overflow-y-auto custom-scrollbar bg-white">
+                            <table class="w-full text-left border-collapse min-w-[700px]">
+                                <thead class="sticky top-0 bg-slate-50 shadow-sm z-10">
+                                    <tr class="text-slate-600 text-[11px] uppercase tracking-wider border-b border-slate-200">
+                                        <th class="p-3 font-bold text-center w-12">No</th>
+                                        <th class="p-3 font-bold">Nama Siswa</th>
+                                        <th class="p-3 font-bold text-center">NISN</th>
+                                        <th class="p-3 font-bold text-center">L/P</th>
+                                        <th class="p-3 font-bold">Asal SD</th>
+                                        <th class="p-3 font-bold">Jalur</th>
+                                        <th class="p-3 font-bold text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelDataPublik" class="text-sm divide-y divide-slate-100">
+                                    <tr><td colspan="7" class="text-center p-8 text-slate-500"><i class="fas fa-spinner fa-spin mr-2"></i>Menarik data dari server...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="page-login" class="page-section max-w-md mx-auto">
-                <button onclick="navigate('page-landing')" class="text-slate-500 hover:text-indigo-600 mb-6 font-medium flex items-center transition"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
+            <div id="page-login" class="page-section max-w-md mx-auto mt-10">
+                <button onclick="navigate('page-landing')" class="text-slate-500 hover:text-secondary mb-6 font-medium flex items-center transition"><i class="fas fa-arrow-left mr-2"></i>Kembali ke Beranda</button>
                 <div class="text-center mb-8">
-                    <div class="flex justify-center items-center gap-6 mb-5">
-                        <img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo 1" class="h-16 md:h-20 w-auto object-contain drop-shadow-md" onerror="this.style.display='none'">
-                        <img src="https://drive.google.com/thumbnail?id=1zJeqWUVUHKhsCy5CbvYL1W33tJpSu6m2" alt="Logo 2" class="h-16 md:h-20 w-auto object-contain drop-shadow-md" onerror="this.style.display='none'">
+                    <div class="flex justify-center items-center gap-4 mb-5">
+                        <img src="https://drive.google.com/thumbnail?id=1sGnp7Xy8lMlj_nYdtPoJUY7pNQ5D1tyc" alt="Logo 1" class="h-16 w-auto object-contain">
                     </div>
-                    <h2 class="text-2xl font-bold text-slate-800">Silakan Masuk</h2>
-                    <p class="text-slate-500 text-sm mt-1">Gunakan NISN anda pada Username dan Password Untuk Login</p>
+                    <h2 class="text-2xl font-bold text-slate-800">Login Portal Siswa</h2>
+                    <p class="text-slate-500 text-sm mt-1">Gunakan NISN sebagai Username dan Password default</p>
                 </div>
                 
-                <form id="formLogin" onsubmit="prosesLogin(event)" class="space-y-5 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+                <form id="formLogin" onsubmit="prosesLogin(event)" class="space-y-5 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Username / NISN</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-user text-slate-400"></i></div>
-                            <input type="text" id="loginUsername" required class="w-full pl-10 pr-4 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition">
+                            <input type="text" id="loginUsername" required class="w-full pl-10 pr-4 py-3 bg-slate-50 rounded-lg border border-slate-200 focus:bg-white focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-lock text-slate-400"></i></div>
-                            <input type="password" id="loginPassword" required class="w-full pl-10 pr-10 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-pink-400 outline-none transition">
+                            <input type="password" id="loginPassword" required class="w-full pl-10 pr-10 py-3 bg-slate-50 rounded-lg border border-slate-200 focus:bg-white focus:ring-2 focus:ring-secondary outline-none transition">
                             <button type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600">
                                 <i id="eyeIconLogin" class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 transition shadow-lg mt-2 flex justify-center items-center">
-                        Masuk Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                    <button type="submit" class="w-full bg-secondary text-white font-bold py-3.5 rounded-lg hover:bg-primary transition shadow flex justify-center items-center mt-4">
+                        Masuk Sistem <i class="fas fa-sign-in-alt ml-2"></i>
                     </button>
                 </form>
             </div>
 
-            <div id="page-cek-status" class="page-section">
-                <button onclick="navigate('page-landing')" class="text-slate-500 hover:text-pink-600 mb-6 font-medium flex items-center"><i class="fas fa-arrow-left mr-2"></i>Kembali</button>
+            <div id="page-cek-status" class="page-section mt-10">
+                <button onclick="navigate('page-landing')" class="text-slate-500 hover:text-secondary mb-6 font-medium flex items-center"><i class="fas fa-arrow-left mr-2"></i>Kembali ke Beranda</button>
                 <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-clipboard-list text-pink-500 mr-3"></i>Tracking Berkas</h2>
-                    <p class="text-slate-500 mt-2">Pantau status pendaftaran dan kelengkapan berkas siswa.</p>
+                    <h2 class="text-3xl font-bold text-slate-800"><i class="fas fa-clipboard-list text-secondary mr-3"></i>Pengecekan Status Berkas</h2>
+                    <p class="text-slate-500 mt-2">Pantau status seleksi dan kelengkapan berkas siswa dengan memasukkan NISN.</p>
                 </div>
                 
                 <div class="max-w-xl mx-auto mb-8 flex flex-col md:flex-row gap-3">
-					<input type="text" id="inputNisnCek" placeholder="Ketik NISN Siswa..." class="w-full md:flex-1 px-5 py-3.5 md:py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-pink-400 outline-none shadow-sm text-base md:text-lg text-center md:text-left">
-					
-					<div class="flex gap-2">
-						<button onclick="prosesCekStatus()" class="flex-1 md:flex-none bg-pink-600 text-white px-6 py-3.5 md:py-4 rounded-xl font-bold hover:bg-pink-700 transition shadow-md flex items-center justify-center">
-							<i class="fas fa-search mr-2"></i>Cari
-						</button>
-						<button onclick="document.getElementById('hasilCekStatus').classList.add('hidden'); document.getElementById('inputNisnCek').value=''; " class="bg-slate-200 text-slate-600 px-5 py-3.5 md:py-4 rounded-xl hover:bg-slate-300 transition flex items-center justify-center shrink-0" title="Reset">
-							<i class="fas fa-sync-alt"></i>
-						</button>
-					</div>
-				</div>
-
-                <div class="max-w-xl mx-auto mt-4 mb-8 bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm">
-                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl shrink-0"><i class="fab fa-whatsapp"></i></div>
-                    <div>
-                        <h4 class="font-bold text-green-800 text-sm">Butuh Bantuan? (Info & Grup WA)</h4>
-                        <p class="text-xs text-green-700">Hubungi Admin: Muhammad Hasratul</p>
-                        <a href="https://wa.me/6281527008924" target="_blank" class="text-sm font-bold text-green-600 hover:text-green-800 underline">081527008924</a>
+                    <input type="text" id="inputNisnCek" placeholder="Ketik NISN Siswa..." class="w-full md:flex-1 px-5 py-3.5 md:py-4 rounded-lg border border-slate-300 focus:ring-2 focus:ring-secondary outline-none shadow-sm text-base md:text-lg text-center md:text-left">
+                    <div class="flex gap-2">
+                        <button onclick="prosesCekStatus()" class="flex-1 md:flex-none bg-secondary text-white px-6 py-3.5 md:py-4 rounded-lg font-bold hover:bg-primary transition shadow-md flex items-center justify-center">
+                            <i class="fas fa-search mr-2"></i>Cari Data
+                        </button>
+                        <button onclick="document.getElementById('hasilCekStatus').classList.add('hidden'); document.getElementById('inputNisnCek').value=''; " class="bg-slate-200 text-slate-600 px-5 py-3.5 md:py-4 rounded-lg hover:bg-slate-300 transition flex items-center justify-center shrink-0" title="Reset">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
                     </div>
                 </div>
 
-                <div id="hasilCekStatus" class="hidden bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm max-w-3xl mx-auto">
+                <div class="max-w-xl mx-auto mt-4 mb-8 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-center gap-4 shadow-sm">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl shrink-0"><i class="fab fa-whatsapp"></i></div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Butuh Bantuan Operator?</h4>
+                        <p class="text-xs text-slate-600">Hubungi Admin: Muhammad Hasratul</p>
+                        <a href="https://wa.me/6281527008924" target="_blank" class="text-sm font-bold text-green-600 hover:text-green-700">081527008924</a>
                     </div>
+                </div>
+
+                <div id="hasilCekStatus" class="hidden bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-3xl mx-auto"></div>
             </div>
 
             <div id="page-siswa" class="page-section">
-                <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-6 border-b border-slate-200 pb-4 gap-4">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-6 border-b border-slate-200 pb-4 gap-4 mt-4">
                     <div>
-                        <p class="text-slate-500 text-sm font-medium mb-1 current-date"><i class="far fa-calendar-alt mr-1"></i> Memuat tanggal...</p>
-                        <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-user-graduate text-indigo-600 mr-2"></i>Selamat Datang, <span id="namaSiswaProfile" class="text-indigo-600">Siswa</span>!</h2>
+                        <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-user-graduate text-secondary mr-2"></i>Selamat Datang, <span id="namaSiswaProfile" class="text-secondary">Siswa</span></h2>
+                        <p class="text-slate-500 text-sm mt-1">Panel Informasi Calon Peserta Didik</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="masukDashboardSiswa()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl font-semibold hover:bg-slate-200 transition" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
-                        <button onclick="logout()" class="bg-red-50 text-red-600 px-5 py-2 rounded-xl font-semibold hover:bg-red-100 border border-red-100 transition"><i class="fas fa-power-off mr-2"></i>Keluar</button>
+                        <button onclick="masukDashboardSiswa()" class="bg-white border border-slate-300 text-slate-600 px-4 py-2 rounded-lg font-semibold hover:bg-slate-50 transition" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                        <button onclick="logout()" class="bg-red-50 text-red-600 px-5 py-2 rounded-lg font-semibold hover:bg-red-100 border border-red-200 transition"><i class="fas fa-power-off mr-2"></i>Logout</button>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-r from-indigo-50 to-blue-50 p-5 rounded-2xl mb-6 border border-indigo-100 shadow-sm">
-                    <h3 class="font-bold text-indigo-800 mb-3 border-b border-indigo-200 pb-2"><i class="fas fa-id-card mr-2"></i>Identitas Siswa</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
-                        <div><p class="text-slate-500 mb-1">Nama Lengkap</p><p class="font-bold text-slate-800" id="detailNamaSiswa">-</p></div>
-                        <div><p class="text-slate-500 mb-1">NISN</p><p class="font-bold text-slate-800" id="detailNisnSiswa">-</p></div>
-                        <div><p class="text-slate-500 mb-1">Jenis Kelamin</p><p class="font-bold text-slate-800" id="detailKelaminSiswa">-</p></div>
-                        <div><p class="text-slate-500 mb-1">Asal Sekolah</p><p class="font-bold text-slate-800" id="detailAsalSiswa">-</p></div>
+                <div class="bg-white p-6 rounded-xl mb-6 border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 mb-4 border-b border-slate-100 pb-2"><i class="fas fa-id-card text-slate-400 mr-2"></i>Biodata Pendaftar</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm mb-4">
+                        <div><p class="text-slate-500 mb-1 text-xs uppercase tracking-wider">Nama Lengkap</p><p class="font-bold text-slate-800" id="detailNamaSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1 text-xs uppercase tracking-wider">NISN</p><p class="font-bold text-slate-800" id="detailNisnSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1 text-xs uppercase tracking-wider">Jenis Kelamin</p><p class="font-bold text-slate-800" id="detailKelaminSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1 text-xs uppercase tracking-wider">Asal Sekolah</p><p class="font-bold text-slate-800" id="detailAsalSiswa">-</p></div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm border-t border-indigo-100 pt-3">
-                        <div><p class="text-slate-500 mb-1">Alamat Lengkap</p><p class="font-bold text-slate-800" id="detailAlamatSiswa">-</p></div>
-                        <div><p class="text-slate-500 mb-1">No. HP Siswa</p><p class="font-bold text-slate-800" id="detailHpSiswa">-</p></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm border-t border-slate-100 pt-4">
+                        <div><p class="text-slate-500 mb-1 text-xs uppercase tracking-wider">Alamat Lengkap</p><p class="font-bold text-slate-800" id="detailAlamatSiswa">-</p></div>
+                        <div><p class="text-slate-500 mb-1 text-xs uppercase tracking-wider">No. HP Siswa</p><p class="font-bold text-slate-800" id="detailHpSiswa">-</p></div>
                     </div>
                 </div>
 
-                <div class="mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="mb-8 bg-blue-50 border border-blue-100 p-6 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-slate-500 font-semibold">Status Seleksi SPMB Anda:</h3>
-                        <p class="text-xs text-slate-400 mt-1">Status ini ditentukan berdasarkan hasil verifikasi panitia.</p>
+                        <h3 class="text-blue-900 font-bold text-lg">Status Kelulusan SPMB</h3>
+                        <p class="text-sm text-blue-700 mt-1">Status ini diperbarui oleh panitia setelah proses verifikasi berkas selesai.</p>
                     </div>
-                    <div id="badgeStatusSiswa" class="px-6 py-2 rounded-full text-lg font-bold shadow-sm"></div>
+                    <div id="badgeStatusSiswa" class="px-6 py-2.5 rounded-lg text-lg font-bold shadow-sm bg-white border"></div>
                 </div>
 
-                <h3 class="text-xl font-bold mb-4 text-slate-800"><i class="fas fa-folder-open text-orange-500 mr-2"></i>Ceklis Kelengkapan Berkas</h3>
+                <h3 class="text-xl font-bold mb-4 text-slate-800"><i class="fas fa-folder-open text-amber-500 mr-2"></i>Daftar Kelengkapan Berkas</h3>
                 <div id="berkasSiswaList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"></div>
-
-                <div class="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center gap-4 shadow-sm">
-                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-2xl shrink-0"><i class="fab fa-whatsapp"></i></div>
-                    <div>
-                        <h4 class="font-bold text-green-800 text-sm">Ada kendala berkas? (Info & Grup WA)</h4>
-                        <p class="text-xs text-green-700">Hubungi Admin: Muhammad Hasratul</p>
-                        <a href="https://wa.me/6281527008924" target="_blank" class="text-sm font-bold text-green-600 hover:text-green-800 underline">081527008924</a>
-                    </div>
-                </div>
             </div>
 
             <div id="page-admin" class="page-section">
-                <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-6 border-b border-slate-200 pb-4 gap-4">
+                <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-6 border-b border-slate-200 pb-4 gap-4 mt-4">
                     <div>
-                        <p class="text-slate-500 text-sm font-medium mb-1 current-date"><i class="far fa-calendar-alt mr-1"></i> Memuat tanggal...</p>
-                        <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-user-shield text-indigo-600 mr-2"></i>Halo, Admin <span id="namaAdminProfile" class="text-indigo-600"></span>!</h2>
-                        <p class="text-slate-500 text-sm mt-1">Panel Manajemen Calon Siswa SPMB</p>
+                        <h2 class="text-2xl font-bold text-slate-800"><i class="fas fa-shield-alt text-primary mr-2"></i>Portal Administrator SPMB</h2>
+                        <p class="text-slate-500 text-sm mt-1">Halo, <span id="namaAdminProfile" class="font-semibold"></span> | Manajemen Data Calon Siswa</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="loadDataAdmin()" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-xl font-semibold hover:bg-slate-200 transition" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
-                        <button onclick="logout()" class="bg-red-50 text-red-600 px-5 py-2 rounded-xl font-semibold hover:bg-red-100 border border-red-100 transition"><i class="fas fa-power-off mr-2"></i>Keluar</button>
+                        <button onclick="loadDataAdmin()" class="bg-white border border-slate-300 text-slate-600 px-4 py-2 rounded-lg font-semibold hover:bg-slate-50 transition" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                        <button onclick="logout()" class="bg-red-50 text-red-600 px-5 py-2 rounded-lg font-semibold hover:bg-red-100 border border-red-200 transition"><i class="fas fa-power-off mr-2"></i>Logout</button>
                     </div>
                 </div>
-				
-				<div class="mb-6 space-y-5">
+                
+                <div class="mb-6 space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-indigo-500 text-white p-5 rounded-2xl shadow-sm flex items-center justify-between">
-                            <div><p class="text-indigo-100 font-medium text-sm md:text-base">Total Pendaftar</p><h3 class="text-3xl font-bold mt-1" id="infoTotalSiswa">0</h3></div>
-                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl"><i class="fas fa-users"></i></div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div><p class="text-slate-500 font-medium text-sm">Total Pendaftar</p><h3 class="text-3xl font-black text-slate-800 mt-1" id="infoTotalSiswa">0</h3></div>
+                            <div class="w-12 h-12 bg-blue-50 text-secondary rounded-lg flex items-center justify-center text-2xl"><i class="fas fa-users"></i></div>
                         </div>
-                        <div class="bg-blue-500 text-white p-5 rounded-2xl shadow-sm flex items-center justify-between">
-                            <div><p class="text-blue-100 font-medium text-sm md:text-base">Siswa Laki-laki</p><h3 class="text-3xl font-bold mt-1" id="infoLakiLaki">0</h3></div>
-                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl"><i class="fas fa-male"></i></div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div><p class="text-slate-500 font-medium text-sm">Laki-laki</p><h3 class="text-3xl font-black text-slate-800 mt-1" id="infoLakiLaki">0</h3></div>
+                            <div class="w-12 h-12 bg-blue-50 text-secondary rounded-lg flex items-center justify-center text-2xl"><i class="fas fa-male"></i></div>
                         </div>
-                        <div class="bg-pink-500 text-white p-5 rounded-2xl shadow-sm flex items-center justify-between">
-                            <div><p class="text-pink-100 font-medium text-sm md:text-base">Siswa Perempuan</p><h3 class="text-3xl font-bold mt-1" id="infoPerempuan">0</h3></div>
-                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl"><i class="fas fa-female"></i></div>
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                            <div><p class="text-slate-500 font-medium text-sm">Perempuan</p><h3 class="text-3xl font-black text-slate-800 mt-1" id="infoPerempuan">0</h3></div>
+                            <div class="w-12 h-12 bg-blue-50 text-secondary rounded-lg flex items-center justify-center text-2xl"><i class="fas fa-female"></i></div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
-                            <h3 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fas fa-chart-pie text-indigo-500 mr-2"></i>Statistik Status & Jalur</h3>
-                            <div class="flex flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4"><i class="fas fa-chart-pie text-slate-400 mr-2"></i>Rekap Status & Jalur</h3>
+                            <div class="flex flex-col gap-5">
                                 <div>
-                                    <p class="text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Status SPMB</p>
-                                    <div class="grid grid-cols-2 gap-2 text-sm">
-                                        <div class="flex justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-yellow-600 font-bold">Proses</span><span class="font-bold text-slate-800" id="infoProses">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-blue-600 font-bold">Menunggu</span><span class="font-bold text-slate-800" id="infoMenunggu">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-green-600 font-bold">Lulus</span><span class="font-bold text-slate-800" id="infoLulus">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-red-600 font-bold">Tdk Lulus</span><span class="font-bold text-slate-800" id="infoTidakLulus">0</span></div>
+                                    <p class="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Status Seleksi</p>
+                                    <div class="grid grid-cols-2 gap-3 text-sm">
+                                        <div class="flex justify-between border-b border-slate-100 pb-1"><span class="text-slate-600">Proses</span><span class="font-bold" id="infoProses">0</span></div>
+                                        <div class="flex justify-between border-b border-slate-100 pb-1"><span class="text-slate-600">Menunggu</span><span class="font-bold" id="infoMenunggu">0</span></div>
+                                        <div class="flex justify-between border-b border-slate-100 pb-1"><span class="text-slate-600">Lulus</span><span class="font-bold text-green-600" id="infoLulus">0</span></div>
+                                        <div class="flex justify-between border-b border-slate-100 pb-1"><span class="text-slate-600">Tidak Lulus</span><span class="font-bold text-red-600" id="infoTidakLulus">0</span></div>
                                     </div>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">Jalur Pendaftaran</p>
-                                    <div class="grid grid-cols-2 gap-2 text-sm">
-                                        <div class="flex justify-between bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="text-slate-600 font-medium">Domisili</span><span class="font-bold text-slate-700" id="infoDomisili">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="text-slate-600 font-medium">Afirmasi</span><span class="font-bold text-slate-700" id="infoAfirmasi">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="text-slate-600 font-medium">Mutasi</span><span class="font-bold text-slate-700" id="infoMutasi">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="text-slate-600 font-medium">Prs. Akd</span><span class="font-bold text-slate-700" id="infoPrestasiAkd">0</span></div>
-                                        <div class="flex justify-between bg-slate-50 p-2 rounded-lg border border-slate-100 col-span-2"><span class="text-slate-600 font-medium">Prestasi Non-Akademik</span><span class="font-bold text-slate-700" id="infoPrestasiNon">0</span></div>
+                                    <p class="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wide">Jalur Pendaftaran</p>
+                                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                                        <div class="flex justify-between"><span class="text-slate-600">Domisili</span><span class="font-bold" id="infoDomisili">0</span></div>
+                                        <div class="flex justify-between"><span class="text-slate-600">Afirmasi</span><span class="font-bold" id="infoAfirmasi">0</span></div>
+                                        <div class="flex justify-between"><span class="text-slate-600">Mutasi</span><span class="font-bold" id="infoMutasi">0</span></div>
+                                        <div class="flex justify-between"><span class="text-slate-600">Prestasi Akademik</span><span class="font-bold" id="infoPrestasiAkd">0</span></div>
+                                        <div class="flex justify-between"><span class="text-slate-600">Prestasi Non Akademik</span><span class="font-bold" id="infoPrestasiNon">0</span></div>
+                                        <div class="flex justify-between"><span class="text-slate-600">Offline (Kuota)</span><span class="font-bold text-primary" id="infoPemenuhan">0</span></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-                            <h3 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fas fa-school text-pink-500 mr-2"></i>Statistik Asal Sekolah</h3>
-                            <div class="flex-grow max-h-[300px] overflow-y-auto pr-2 space-y-2 custom-scrollbar" id="infoAsalSekolahList">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col">
+                            <h3 class="font-bold text-slate-800 border-b border-slate-100 pb-3 mb-4"><i class="fas fa-school text-slate-400 mr-2"></i>Statistik Asal Sekolah</h3>
+                            <div class="flex-grow max-h-[250px] overflow-y-auto pr-2 space-y-2 custom-scrollbar" id="infoAsalSekolahList">
                                 <div class="text-center text-slate-400 text-sm mt-8"><i class="fas fa-spinner fa-spin mr-2"></i>Menghitung data...</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-                    <div class="flex flex-col md:flex-row justify-between items-center mb-5 gap-4">
-                        <h3 class="text-lg font-bold text-slate-800"><i class="fas fa-users text-indigo-500 mr-2"></i>Daftar Pendaftar</h3>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-5 md:p-6 border-b border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fas fa-table text-secondary mr-2"></i>Tabel Data Pendaftar</h3>
                         <div class="flex gap-2 w-full md:w-auto">
-                            <button onclick="cetakPDF()" class="flex-1 md:flex-none bg-rose-500 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-rose-600 transition shadow-md"><i class="fas fa-file-pdf mr-2"></i>Cetak PDF</button>
-                            <button onclick="bukaModalSiswa('tambah')" class="flex-1 md:flex-none bg-green-600 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-green-700 transition shadow-md"><i class="fas fa-plus mr-2"></i>Tambah Siswa</button>
+                            <button onclick="cetakPDF()" class="flex-1 md:flex-none bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg font-semibold hover:bg-slate-50 transition shadow-sm text-sm"><i class="fas fa-file-pdf text-red-500 mr-2"></i>Eksport PDF</button>
+                            <button onclick="bukaModalSiswa('tambah')" class="flex-1 md:flex-none bg-secondary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary transition shadow-sm text-sm"><i class="fas fa-plus mr-2"></i>Input Manual</button>
                         </div>
                     </div>
-					
-					<div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 space-y-3">
-                        <div class="flex flex-col md:flex-row gap-3">
+                    
+                    <div class="p-5 border-b border-slate-200 bg-white">
+                        <div class="flex flex-col md:flex-row gap-4 mb-4">
                             <div class="flex-1 relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-search text-slate-400"></i></div>
-                                <input type="text" id="filterSearch" onkeyup="terapkanFilterAdmin()" placeholder="Cari Nama atau NISN..." class="w-full pl-10 pr-4 py-2 rounded-lg border outline-none focus:ring-2 focus:ring-indigo-400 text-sm">
+                                <input type="text" id="filterSearch" onkeyup="terapkanFilterAdmin()" placeholder="Cari Nama atau NISN..." class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-secondary focus:border-transparent text-sm">
                             </div>
                             <div class="flex items-center gap-2">
-                                <label class="text-sm text-slate-600 font-medium">Tampilkan:</label>
-                                <select id="filterLimit" onchange="ubahLimitAdmin()" class="px-3 py-2 rounded-lg border outline-none focus:ring-2 focus:ring-indigo-400 text-sm font-semibold bg-white">
+                                <label class="text-sm text-slate-600 font-medium whitespace-nowrap">Tampilkan:</label>
+                                <select id="filterLimit" onchange="ubahLimitAdmin()" class="px-3 py-2.5 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-secondary text-sm font-medium bg-white">
                                     <option value="10">10 Baris</option>
                                     <option value="20">20 Baris</option>
                                     <option value="50">50 Baris</option>
@@ -408,44 +479,49 @@
                         </div>
                         
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            <select id="filterJalur" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2 rounded-lg border outline-none text-sm bg-white"><option value="Semua">Semua Jalur</option><option value="Domisili">Domisili</option><option value="Afirmasi">Afirmasi</option><option value="Mutasi">Mutasi</option><option value="Prestasi Akademik">Prestasi Akademik</option><option value="Prestasi Non Akademik">Prestasi Non Akademik</option></select>
-                            <select id="filterKelamin" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2 rounded-lg border outline-none text-sm bg-white"><option value="Semua">Semua L/P</option><option value="Laki-laki">Laki-laki (L)</option><option value="Perempuan">Perempuan (P)</option></select>
-                            <select id="filterStatus" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2 rounded-lg border outline-none text-sm bg-white"><option value="Semua">Semua Status</option><option value="Proses">Proses</option><option value="Menunggu Pengumuman">Menunggu Pengumuman</option><option value="Lulus">Lulus</option><option value="Tidak Lulus">Tidak Lulus</option></select>
-                            <select id="filterAsal" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2 rounded-lg border outline-none text-sm bg-white">
-                                <option value="Semua">Semua Asal Sekolah</option>
-                                </select>
+                            <select id="filterJalur" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 outline-none text-sm bg-white font-medium text-slate-700">
+                                <option value="Semua">Semua Jalur</option>
+                                <option value="Domisili">Domisili</option>
+                                <option value="Afirmasi">Afirmasi</option>
+                                <option value="Mutasi">Mutasi</option>
+                                <option value="Prestasi Akademik">Prestasi Akademik</option>
+                                <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
+                                <option value="Pemenuhan Kuota (Offline)">Pemenuhan Kuota (Offline)</option>
+                            </select>
+                            <select id="filterKelamin" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 outline-none text-sm bg-white font-medium text-slate-700"><option value="Semua">Semua L/P</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
+                            <select id="filterStatus" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 outline-none text-sm bg-white font-medium text-slate-700"><option value="Semua">Semua Status</option><option value="Proses">Proses</option><option value="Menunggu Pengumuman">Menunggu Pengumuman</option><option value="Lulus">Lulus</option><option value="Tidak Lulus">Tidak Lulus</option></select>
+                            <select id="filterAsal" onchange="terapkanFilterAdmin()" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 outline-none text-sm bg-white font-medium text-slate-700"><option value="Semua">Semua Asal Sekolah</option></select>
                         </div>
                     </div>
                     
-                    <div class="overflow-x-auto rounded-xl border border-slate-100">
+                    <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[1000px]">
-                        <thead>
-                            <tr class="bg-slate-50 text-slate-600 text-sm uppercase tracking-wider border-b border-slate-200">
-                                <th class="p-4 font-semibold text-center w-12">No</th>
-								<th class="p-4 font-semibold">Nama Siswa</th>
-                                <th class="p-4 font-semibold">NISN</th>
-                                <th class="p-4 font-semibold">L/P</th>
-                                <th class="p-4 font-semibold">Asal Sekolah</th>
-                                <th class="p-4 font-semibold">Jalur</th>
-                                <th class="p-4 font-semibold">Status</th>
-                                <th class="p-4 font-semibold text-center">Aksi Manajemen</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelDataAdmin" class="text-sm divide-y divide-slate-100"></tbody>
-                    </table>
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
+                                    <th class="p-4 font-bold text-center w-12">No</th>
+                                    <th class="p-4 font-bold">Nama Siswa</th>
+                                    <th class="p-4 font-bold">NISN</th>
+                                    <th class="p-4 font-bold">L/P</th>
+                                    <th class="p-4 font-bold">Asal Sekolah</th>
+                                    <th class="p-4 font-bold">Jalur</th>
+                                    <th class="p-4 font-bold">Status</th>
+                                    <th class="p-4 font-bold text-center">Aksi Manajemen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelDataAdmin" class="text-sm divide-y divide-slate-100"></tbody>
+                        </table>
                     </div>
-					<div class="flex flex-col md:flex-row justify-between items-center mt-4 gap-4">
+                    <div class="p-5 border-t border-slate-200 bg-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
                         <div class="text-sm text-slate-500 font-medium" id="infoHalamanAdmin">Menampilkan 0 - 0 dari 0 data</div>
-                        <div class="flex gap-1" id="tombolHalamanAdmin">
-                            </div>
+                        <div class="flex gap-1" id="tombolHalamanAdmin"></div>
                     </div>
                 </div>
             </div>
 
             <div id="modalGantiPassword" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-                <div class="bg-white p-6 md:p-8 rounded-3xl max-w-md w-full shadow-2xl">
+                <div class="bg-white p-6 md:p-8 rounded-2xl max-w-md w-full shadow-2xl border-t-4 border-amber-500">
                     <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"><i class="fas fa-user-lock"></i></div>
+                        <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"><i class="fas fa-user-lock"></i></div>
                         <h3 class="text-xl font-bold text-slate-800">Ubah Password Default!</h3>
                         <p class="text-slate-600 text-sm mt-2">Ini adalah login pertamamu. Silakan ubah password default (NISN) demi keamanan data kamu.</p>
                     </div>
@@ -453,7 +529,7 @@
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Password Baru</label>
                             <div class="relative">
-                                <input type="password" id="newPass1" class="w-full pl-4 pr-10 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <input type="password" id="newPass1" class="w-full pl-4 pr-10 py-3 bg-slate-50 rounded-lg border border-slate-300 focus:bg-white focus:ring-2 focus:ring-amber-500 outline-none">
                                 <button type="button" onclick="togglePassword('newPass1', 'eyeIcon1')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400">
                                     <i id="eyeIcon1" class="fas fa-eye"></i>
                                 </button>
@@ -462,13 +538,13 @@
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">Ulangi Password Baru</label>
                             <div class="relative">
-                                <input type="password" id="newPass2" class="w-full pl-4 pr-10 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:ring-2 focus:ring-yellow-400 outline-none">
+                                <input type="password" id="newPass2" class="w-full pl-4 pr-10 py-3 bg-slate-50 rounded-lg border border-slate-300 focus:bg-white focus:ring-2 focus:ring-amber-500 outline-none">
                                 <button type="button" onclick="togglePassword('newPass2', 'eyeIcon2')" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400">
                                     <i id="eyeIcon2" class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-                        <button onclick="simpanPasswordBaru()" class="w-full bg-yellow-500 text-white font-bold py-3.5 rounded-xl hover:bg-yellow-600 transition shadow-lg mt-4 flex justify-center items-center">
+                        <button onclick="simpanPasswordBaru()" class="w-full bg-amber-500 text-white font-bold py-3.5 rounded-lg hover:bg-amber-600 transition shadow mt-4 flex justify-center items-center">
                             <i class="fas fa-save mr-2"></i>Simpan Password
                         </button>
                     </div>
@@ -476,89 +552,102 @@
             </div>
 
             <div id="modalFormAdmin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 overflow-y-auto p-4 py-10">
-                <div class="bg-white p-6 md:p-8 rounded-3xl max-w-4xl w-full shadow-2xl relative">
-                    <h3 id="judulModalAdmin" class="text-2xl font-bold text-slate-800 mb-6 border-b pb-3">Tambah Siswa</h3>
+                <div class="bg-white p-6 md:p-8 rounded-2xl max-w-4xl w-full shadow-2xl relative border-t-4 border-secondary">
+                    <h3 id="judulModalAdmin" class="text-2xl font-bold text-slate-800 mb-6 border-b pb-3">Tambah Siswa Baru</h3>
                     <input type="hidden" id="formAdminMode">
                     <input type="hidden" id="formAdminNisnLama">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 max-h-[55vh] overflow-y-auto pr-3 pb-4">
                         
-                        <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-1"><i class="fas fa-id-badge mr-2"></i>Identitas Utama</div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap</label><input type="text" id="formAdminNama" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">NISN (Sbg Password)</label><input type="number" id="formAdminNisn" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div class="col-span-full font-bold text-primary border-b pb-1 mt-1"><i class="fas fa-id-badge mr-2"></i>Identitas Utama</div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap</label><input type="text" id="formAdminNama" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">NISN (Sbg Password)</label><input type="number" id="formAdminNisn" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
                         <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jenis Kelamin</label>
-                            <select id="formAdminKelamin" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
+                            <select id="formAdminKelamin" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
                         </div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Asal Sekolah</label><input type="text" id="formAdminAsal" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                        <div class="lg:col-span-2"><label class="block text-sm font-semibold text-slate-700 mb-1">Alamat Lengkap</label><input type="text" id="formAdminAlamat" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Siswa</label><input type="number" id="formAdminHpSiswa" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Asal Sekolah</label><input type="text" id="formAdminAsal" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
+                        <div class="lg:col-span-2"><label class="block text-sm font-semibold text-slate-700 mb-1">Alamat Lengkap</label><input type="text" id="formAdminAlamat" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Siswa</label><input type="number" id="formAdminHpSiswa" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
                         
-                        <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-4"><i class="fas fa-users mr-2"></i>Data Orang Tua & Wali</div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ayah</label><input type="text" id="formAdminNamaAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ayah</label><input type="number" id="formAdminHpAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div class="col-span-full font-bold text-primary border-b pb-1 mt-4"><i class="fas fa-users mr-2"></i>Data Orang Tua & Wali</div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ayah</label><input type="text" id="formAdminNamaAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ayah</label><input type="number" id="formAdminHpAyah" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
                         <div class="hidden lg:block"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ibu</label><input type="text" id="formAdminNamaIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ibu</label><input type="number" id="formAdminHpIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Ibu</label><input type="text" id="formAdminNamaIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Ibu</label><input type="number" id="formAdminHpIbu" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
                         <div class="hidden lg:block"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Wali (Opsional)</label><input type="text" id="formAdminNamaWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Wali (Opsional)</label><input type="number" id="formAdminHpWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Nama Wali (Opsional)</label><input type="text" id="formAdminNamaWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">No. HP Wali (Opsional)</label><input type="number" id="formAdminHpWali" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none"></div>
                         
-                        <div class="col-span-full font-bold text-indigo-600 border-b pb-1 mt-4"><i class="fas fa-clipboard-check mr-2"></i>Status SPMB</div>
-                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jalur SPMB</label>
-                            <select id="formAdminJalur" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:ring-2 focus:ring-indigo-400 outline-none"><option value="Domisili">Domisili</option><option value="Afirmasi">Afirmasi</option><option value="Mutasi">Mutasi</option><option value="Prestasi Akademik">Prestasi Akademik</option><option value="Prestasi Non Akademik">Prestasi Non Akademik</option></select>
+                        <div class="col-span-full font-bold text-primary border-b pb-1 mt-4"><i class="fas fa-clipboard-check mr-2"></i>Status Manajemen SPMB</div>
+                        <div><label class="block text-sm font-semibold text-slate-700 mb-1">Jalur Pendaftaran</label>
+                            <select id="formAdminJalur" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:ring-2 focus:ring-secondary outline-none">
+                                <option value="Domisili">Domisili</option>
+                                <option value="Afirmasi">Afirmasi</option>
+                                <option value="Mutasi">Mutasi</option>
+                                <option value="Prestasi Akademik">Prestasi Akademik</option>
+                                <option value="Prestasi Non Akademik">Prestasi Non Akademik</option>
+                                <option value="Pemenuhan Kuota (Offline)">Pemenuhan Kuota (Offline)</option>
+                            </select>
                         </div>
                         <div><label class="block text-sm font-semibold text-slate-700 mb-1">Status Lulus</label>
-                            <select id="formAdminStatus" class="w-full px-4 py-2.5 bg-slate-50 rounded-xl border focus:bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
-								<option value="Proses">Proses</option>
-								<option value="Menunggu Pengumuman">Menunggu Pengumuman</option> <option value="Lulus">Lulus</option>
-								<option value="Tidak Lulus">Tidak Lulus</option>
-							</select>
+                            <select id="formAdminStatus" class="w-full px-4 py-2.5 bg-slate-50 rounded-lg border focus:bg-white focus:ring-2 focus:ring-secondary outline-none">
+                                <option value="Proses">Proses</option>
+                                <option value="Menunggu Pengumuman">Menunggu Pengumuman</option>
+                                <option value="Lulus">Lulus</option>
+                                <option value="Tidak Lulus">Tidak Lulus</option>
+                            </select>
                         </div>
                     </div>
                     
-                    <div class="flex gap-3 justify-end pt-4 border-t border-slate-100">
-                        <button onclick="document.getElementById('modalFormAdmin').classList.add('hidden')" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition">Batal</button>
-                        <button onclick="simpanSiswaAdmin()" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md transition"><i class="fas fa-save mr-2"></i>Simpan Data</button>
+                    <div class="flex gap-3 justify-end pt-4 border-t border-slate-200">
+                        <button onclick="document.getElementById('modalFormAdmin').classList.add('hidden')" class="px-6 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300 transition">Batal</button>
+                        <button onclick="simpanSiswaAdmin()" class="px-6 py-2.5 bg-secondary text-white rounded-lg font-bold hover:bg-primary shadow transition"><i class="fas fa-save mr-2"></i>Simpan Data</button>
                     </div>
                 </div>
             </div>
             
             <div id="modalBerkasAdmin" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 overflow-y-auto p-4 py-10">
-                <div class="bg-white p-6 md:p-8 rounded-3xl max-w-5xl w-full shadow-2xl relative">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-2"><i class="fas fa-clipboard-check text-indigo-500 mr-2"></i>Ceklis Berkas Siswa</h3>
-                    <p class="text-slate-500 text-sm mb-6 pb-4 border-b border-slate-100">
+                <div class="bg-white p-6 md:p-8 rounded-2xl max-w-5xl w-full shadow-2xl relative">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2"><i class="fas fa-clipboard-check text-secondary mr-2"></i>Verifikasi Berkas Fisik</h3>
+                    <p class="text-slate-500 text-sm mb-6 pb-4 border-b border-slate-200">
                         <span id="berkasAdminNama" class="font-bold text-slate-800 text-base mr-2"></span> 
-                        (NISN: <span id="berkasAdminNisn" class="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded"></span>)
+                        (NISN: <span id="berkasAdminNisn" class="font-bold text-secondary bg-blue-50 border border-blue-100 px-2 py-1 rounded"></span>)
                     </p>
                     
                     <div id="formBerkasContainer" class="space-y-3 max-h-[55vh] overflow-y-auto pr-2 mb-6"></div>
                     
-                    <div class="flex gap-3 justify-end pt-4 border-t border-slate-100">
-                        <button onclick="document.getElementById('modalBerkasAdmin').classList.add('hidden')" class="px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition">Tutup</button>
-                        <button onclick="simpanBerkasAdmin()" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md transition"><i class="fas fa-save mr-2"></i>Simpan Perubahan</button>
+                    <div class="flex gap-3 justify-end pt-4 border-t border-slate-200">
+                        <button onclick="document.getElementById('modalBerkasAdmin').classList.add('hidden')" class="px-6 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300 transition">Tutup</button>
+                        <button onclick="simpanBerkasAdmin()" class="px-6 py-2.5 bg-secondary text-white rounded-lg font-bold hover:bg-primary shadow transition"><i class="fas fa-save mr-2"></i>Simpan Perubahan</button>
                     </div>
                 </div>
             </div>
-			
-			<div id="modalDetailSiswa" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center z-50 overflow-y-auto p-4 py-10">
-                <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]">
-                    <div class="bg-indigo-600 p-5 md:p-6 flex justify-between items-center shrink-0">
-                        <h3 class="text-2xl font-bold text-white"><i class="fas fa-id-card-alt mr-3"></i>Detail Data Calon Siswa</h3>
+
+            <div id="modalDetailSiswa" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center z-50 overflow-y-auto p-4 py-10">
+                <div class="bg-white rounded-2xl max-w-4xl w-full shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]">
+                    <div class="bg-primary p-5 md:p-6 flex justify-between items-center shrink-0">
+                        <h3 class="text-xl md:text-2xl font-bold text-white"><i class="fas fa-id-card-alt mr-3"></i>Detail Data Calon Siswa</h3>
                         <button onclick="document.getElementById('modalDetailSiswa').classList.add('hidden')" class="text-white hover:text-red-200 text-2xl transition"><i class="fas fa-times"></i></button>
                     </div>
                     
                     <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-grow bg-slate-50" id="kontenDetailSiswa">
-                        <div class="text-center py-10 text-indigo-500"><i class="fas fa-spinner fa-spin text-4xl mb-3"></i><p class="font-bold">Memuat Detail Lengkap...</p></div>
+                        <div class="text-center py-10 text-secondary"><i class="fas fa-spinner fa-spin text-4xl mb-3"></i><p class="font-bold">Memuat Detail Lengkap...</p></div>
                     </div>
                 </div>
             </div>
 
-        </div> </div> <footer class="w-full text-center pb-6 text-white text-sm font-medium opacity-90 drop-shadow-md">
-        &copy; Hak Cipta SPMB 2026 UPT SPF SMP NEGERI 16 MAKASSAR <br>
-        <span class="text-xs font-normal opacity-75 mt-1 block">Powered by Mappaguru Online</span>
+        </div>
+    </div> 
+
+    <footer class="bg-white border-t border-slate-200 w-full mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-6 text-center text-slate-500 text-sm font-medium">
+            &copy; 2026 Hak Cipta SPMB - UPT SPF SMP NEGERI 16 MAKASSAR <br>
+            <span class="text-xs font-normal mt-1 block text-slate-400">Powered by Mappaguru Online</span>
+        </div>
     </footer>
 
-	<script src="script.obfuscated.js"></script>
+    <script src="script.obfuscated.js"></script>
    
 </body>
 </html>

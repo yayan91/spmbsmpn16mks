@@ -53,37 +53,40 @@
 	
 	<!-- POPUP PENGUMUMAN ANTI PUNGLI -->
     <div id="welcomePopup" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-[120] p-4 transition-opacity duration-300">
-        <div class="bg-white p-6 md:p-8 rounded-3xl max-w-2xl w-full shadow-2xl text-center relative overflow-hidden border-t-4 border-red-500">
-            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm">
-                <i class="fas fa-bullhorn"></i>
-            </div>
-            
-            <h2 class="text-xl md:text-2xl font-black text-slate-800 mb-2">PENGUMUMAN RESMI PANITIA SPMB 2026</h2>
-            <p class="text-sm font-bold text-secondary mb-6">UPT SPF SMP NEGERI 16 MAKASSAR</p>
-            
-            <div class="text-sm text-slate-600 leading-relaxed space-y-4 text-left bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6">
-                <p>Selamat datang di Portal Layanan Satu Pintu Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran 2026/2027.</p>
-                <p>Guna mewujudkan proses penerimaan peserta didik yang bersih, transparan, dan berintegritas, bersama ini kami menegaskan bahwa:</p>
-                <ul class="list-decimal pl-5 space-y-2 font-medium text-slate-700">
-                    <li>Seluruh tahapan pendaftaran, seleksi berkas, hingga pengumuman kelulusan di UPT SPF SMP Negeri 16 Makassar adalah <span class="font-bold text-green-600">100% GRATIS</span> dan <span class="font-bold text-green-600">BEBAS PUNGLI</span>.</li>
-                    <li>Panitia SPMB <span class="font-bold text-red-600">TIDAK PERNAH</span> memungut biaya dalam bentuk apapun, serta tidak melayani pihak manapun yang menjanjikan jaminan kelulusan di luar jalur resmi.</li>
-                </ul>
+		<div class="bg-white p-6 md:p-8 rounded-3xl max-w-2xl w-full shadow-2xl text-center relative border-t-4 border-red-500 flex flex-col max-h-[95vh]">
+			
+			<!-- Bagian Header Popup (Terkunci) -->
+			<div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-sm shrink-0">
+				<i class="fas fa-bullhorn"></i>
+			</div>
+			<h2 class="text-xl md:text-2xl font-black text-slate-800 mb-2 shrink-0">PENGUMUMAN RESMI PANITIA SPMB 2026</h2>
+			<p class="text-sm font-bold text-secondary mb-6 shrink-0">UPT SPF SMP NEGERI 16 MAKASSAR</p>
+			
+			<!-- Bagian Isi Pengumuman (Bisa di-scroll di HP) -->
+			<div class="text-sm text-slate-600 leading-relaxed space-y-4 text-left bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6 overflow-y-auto max-h-[50vh] custom-scrollbar">
+				<p>Selamat datang di Portal Layanan Satu Pintu Sistem Penerimaan Murid Baru (SPMB) Tahun Ajaran 2026/2027.</p>
+				<p>Guna mewujudkan proses penerimaan peserta didik yang bersih, transparan, dan berintegritas, bersama ini kami menegaskan bahwa:</p>
+				<ul class="list-decimal pl-5 space-y-2 font-medium text-slate-700">
+					<li>Seluruh tahapan pendaftaran, seleksi berkas, hingga pengumuman kelulusan di UPT SPF SMP Negeri 16 Makassar adalah <span class="font-bold text-green-600">100% GRATIS</span> dan <span class="font-bold text-green-600">BEBAS PUNGLI</span>.</li>
+					<li>Panitia SPMB <span class="font-bold text-red-600">TIDAK PERNAH</span> memungut biaya dalam bentuk apapun, serta tidak melayani pihak manapun yang menjanjikan jaminan kelulusan di luar jalur resmi.</li>
+				</ul>
 				<!-- KODE TAMBAHAN INFORMASI WEBSITE RESMI -->
-                <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-4 rounded-r-lg">
-                    <p class="font-bold text-blue-800 text-xs mb-1"><i class="fas fa-info-circle mr-1"></i> Informasi Pendaftaran</p>
-                    <p class="text-xs text-blue-700 leading-relaxed">Portal ini khusus digunakan untuk <b>pemantauan kelengkapan berkas dan status seleksi internal</b> di UPT SPF SMP Negeri 16 Makassar. Adapun proses pendaftaran <i>online</i> terpusat wajib dilakukan melalui website resmi Pemerintah Kota Makassar: <a href="https://spmb.makassarkota.go.id" target="_blank" class="font-bold underline hover:text-blue-900">spmb.makassarkota.go.id</a>.</p>
-                </div>
-                <div class="bg-red-50 border-l-4 border-red-300 p-3 mt-4 rounded-r-lg">
-                    <p class="font-bold text-red-700 text-xs mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> Peringatan Penting!</p>
-                    <p class="text-xs text-red-600">Apabila terdapat oknum yang menghubungi Bapak/Ibu mengatasnamakan Panitia atau Sekolah dan meminta imbalan untuk kelulusan, hal tersebut adalah <b>PENIPUAN</b>. Mohon abaikan dan laporkan ke sekolah.</p>
-                </div>
-            </div>
-            
-            <button onclick="tutupWelcomePopup()" class="w-full bg-secondary text-white font-bold py-3.5 rounded-xl hover:bg-primary transition shadow-lg flex items-center justify-center">
-                <i class="fas fa-check-circle mr-2"></i> Saya Mengerti & Lanjutkan
-            </button>
-        </div>
-    </div>
+				<div class="bg-blue-50 border-l-4 border-blue-400 p-3 mt-4 rounded-r-lg">
+					<p class="font-bold text-blue-800 text-xs mb-1"><i class="fas fa-info-circle mr-1"></i> Informasi Pendaftaran</p>
+					<p class="text-xs text-blue-700 leading-relaxed">Portal ini khusus digunakan untuk <b>pemantauan kelengkapan berkas dan status seleksi internal</b> di UPT SPF SMP Negeri 16 Makassar. Adapun proses pendaftaran <i>online</i> terpusat wajib dilakukan melalui website resmi Pemerintah Kota Makassar: <a href="https://spmb.makassarkota.go.id" target="_blank" class="font-bold underline hover:text-blue-900">spmb.makassarkota.go.id</a>.</p>
+				</div>
+				<div class="bg-red-50 border-l-4 border-red-300 p-3 mt-4 rounded-r-lg">
+					<p class="font-bold text-red-700 text-xs mb-1"><i class="fas fa-exclamation-triangle mr-1"></i> Peringatan Penting!</p>
+					<p class="text-xs text-red-600">Apabila terdapat oknum yang menghubungi Bapak/Ibu mengatasnamakan Panitia atau Sekolah dan meminta imbalan untuk kelulusan, hal tersebut adalah <b>PENIPUAN</b>. Mohon abaikan dan laporkan ke sekolah.</p>
+				</div>
+			</div>
+			
+			<!-- Bagian Tombol (Terkunci di bawah) -->
+			<button onclick="tutupWelcomePopup()" class="w-full bg-secondary text-white font-bold py-3.5 rounded-xl hover:bg-primary transition shadow-lg flex items-center justify-center shrink-0">
+				<i class="fas fa-check-circle mr-2"></i> Saya Mengerti & Lanjutkan
+			</button>
+		</div>
+	</div>
 
     <div class="flex-grow p-4 md:p-8">
         <div class="w-full max-w-7xl mx-auto">
